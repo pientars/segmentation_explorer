@@ -1,0 +1,42 @@
+body {
+  font-family: 'Open Sans', sans-serif;
+}
+
+#title-text {
+  font-size: 25px;
+  font-family: 'Bowlby One SC', cursive;
+  padding: 15px 1px 0px 1px;
+}
+
+.title-light {
+  font-size: 20px;
+  font-family: 'Bowlby One SC', cursive;
+  opacity: .3;
+  padding-top: 18px;
+}
+
+.file-input {
+  padding-top: 8px;
+}
+
+#run-batch-button {
+  padding-top: 8px;
+}
+
+
+#run-batch-button {
+  padding-top: 8px;
+}
+#batch-glyph {
+  padding-left: 5px;
+}
+
+#kernel-tray {
+  border-color: #afafaf;
+  border-right-style: solid;
+}
+
+#pipeline-tray {
+  border-color: #afafaf;
+  border-right-style: solid;
+}

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<head>
+<title>Segmentation Explorer</title>
+  <script src="static/js/external/d3.min.js"></script>
+  <script src="static/js/external/jquery-3.1.0.min.js"></script>
+  <script src="static/js/external/jquery-ui.min.js"></script>
+  <script src="static/js/external/chosen.jquery.min.js"></script>
+  <script src="static/js/external/bootstrap.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="/static/css/external/jquery-ui.min.css">
+  <link rel="stylesheet" type="text/css" href="/static/css/external/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="/static/css/external/bootstrap-theme.min.css">
+  <link rel="stylesheet" type="text/css" href="/static/css/gui.css">
+  <link href="https://fonts.googleapis.com/css?family=Bowlby+One+SC|Open+Sans" rel="stylesheet">
+</head>
+<body>
+  <nav class="navbar navbar-default navbar-fixed-top" id="main-nav">
+    <div class="container-fluid">
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="col-sm-2 ">
+        <div class="navbar-header">
+        <a class="title-light navbar-brand">seg</a>
+        <a class="navbar-brand" id="title-text" href="#">Mentat</a>
+        <a class="title-light navbar-brand">ion</a>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="input-group file-input">
+          <label class="input-group-btn">
+          <span class="btn btn-primary">
+            Browse&hellip; <input type="file" style="display: none;"  multiple>
+          </span>
+          </label>
+          <input type="text" class="form-control" placeholder="Select batch folder..." readonly>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="input-group file-input">
+          <label class="input-group-btn">
+          <span class="btn btn-primary">
+            Browse&hellip; <input type="file" style="display: none;"  multiple>
+          </span>
+          </label>
+          <input type="text" class="form-control" placeholder="Select sample image..." readonly>
+        </div>
+      </div>
+      <div class="col-sm-1"id="run-batch-button">
+        <div class="collapse navbar-collapse" id="button-menu" >
+
+          <span class="btn btn-primary">Run Batch <span class="glyphicon glyphicon-duplicate" aria-hidden="true" id="batch-glyph"></span> </span>
+        </div><!-- /.navbar-collapse -->
+      </div>
+      <div class="col-sm-1">
+        <div class="collapse navbar-collapse pull-right" id="run-batch-button">
+          <button type="button" id='help-button' class="btn btn-default pull-right" data-toggle="modal" data-target="#myModal">
+            Help <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+          </button>
+        </div><!-- /.navbar-collapse -->
+      </div>
+    </div><!-- /.container-fluid -->
+  </nav>
+  <!-- Modal -->
+  <div id="myModal" class="modal fade">
+      <div class="modal-dialog">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+              </div>
+              <div class="modal-body">
+                  <h3> General </h3>
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              </div>
+          </div>
+      </div>
+  </div>
+<!-- BODY DIV -->
+<div class="container-fluid dashboard-container">
+  <div class="col-sm-2" id="kernel-tray">
+    <div class="outer-kernel-tray">
+    </div>
+  </div>
+  <div class="col-sm-2" id="pipeline-tray">
+  </div>
+  <div class="col-sm-8" id="demo-tray">
+  </div>
+
+</div>
+<script src="/static/js/gui.js"></script>
+</body>
