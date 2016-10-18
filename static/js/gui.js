@@ -1,7 +1,9 @@
 var params = {},
     c_params = 0,
-    files = ['C:\\Users\\Hitchens\\Documents\\mentat_data\\buildings.jpg'],
-    out_dir = 'C:\\Users\\Hitchens\\Documents\\mentat_data\\test'
+    files = [],
+    out_dir = '',
+    input_dir = '',
+    sample_image = ''
 
 $(document).on('change', ':file', function() {
   var input = $(this),
@@ -64,6 +66,7 @@ $(document).ready( function() {
     .attr('marker-end', 'url(#arrow)')
     .style('stroke-width', '25')
     .style('stroke', '#e0e0e0');
+
   $('#run-button').on('click', run_samples )
 });
 
@@ -79,7 +82,24 @@ function on_drop(el){
   c_params += 1
 }
 
+function run_batch(d){
+
+}
+
+
 function run_samples(d){
+  input_dir = $('#input-dir-input').val();
+  if (input_dir.length === 0) {
+    alert('Enter a batch directory.');
+    return false;
+  }
+  // out_dir = $('#output-dir-input').val();
+  // if (out_dir.length === 0) {
+  //   alert('Enter an output directory.');
+  //   return false;
+  // }
+  sample_image = $('#sample-input').val();
+  files = [input_dir+sample_image]
   var trilden = [];
   $('#pipeline-inner-tray > div > h1.kernel-label').contents().each(function(d){
     trilden.push({

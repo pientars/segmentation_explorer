@@ -19,31 +19,31 @@
   <nav class="navbar navbar-default navbar-fixed-top" id="main-nav">
     <div class="container-fluid">
       <!-- Brand and toggle get grouped for better mobile display -->
-      <div class="col-sm-2 ">
+      <div class="col-sm-1">
         <div class="navbar-header">
-        <a class="title-light navbar-brand">seg</a>
+        <!-- <a class="title-light navbar-brand">seg</a> -->
         <a class="navbar-brand" id="title-text" href="#">Mentat</a>
-        <a class="title-light navbar-brand">ion</a>
+        <!-- <a class="title-light navbar-brand">ion</a> -->
         </div>
       </div>
-      <div class="col-sm-4">
-        <div class="input-group file-input">
-          <label class="input-group-btn">
-          <span class="btn btn-primary">
-            Browse&hellip; <input type="file" style="display: none;"  multiple>
-          </span>
-          </label>
-          <input type="text" class="form-control" placeholder="Select batch folder..." readonly>
+      <div class="col-sm-3">
+        <div class="file-input">
+          <input type="text" class="form-control" id="input-dir-input" placeholder="Select batch folder...">
         </div>
       </div>
-      <div class="col-sm-4">
+      <div class="col-sm-3">
         <div class="input-group file-input">
           <label class="input-group-btn">
-          <span class="btn btn-primary">
-            Browse&hellip; <input type="file" style="display: none;"  multiple>
-          </span>
+            <span class="btn btn-primary">
+              Browse&hellip; <input type="file" style="display: none;" multiple>
+            </span>
           </label>
-          <input type="text" class="form-control" placeholder="Select sample image..." readonly>
+          <input type="text" class="form-control" id="sample-input" placeholder="Select sample image...">
+        </div>
+      </div>
+      <div class="col-sm-3">
+        <div class="file-input">
+          <input type="text" class="form-control" id="output-dir-input" placeholder="Select output folder...">
         </div>
       </div>
       <div class="col-sm-2" id="run-button-menu">
@@ -88,22 +88,23 @@
                 <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">Filters</a>
               </h4>
             </div>
-          </div>
-          <div id="collapse1" class="panel-collapse collapse">
-            <div class="kernel-subtray  kernel-filter">
-              <h1 class="kernel-label">Gaussian</h1>
+            <div id="collapse1" class="panel-collapse collapse">
+              <div class="kernel-subtray  kernel-filter">
+                <h1 class="kernel-label">Gaussian</h1>
+              </div>
+              <div class="kernel-subtray kernel-filter">
+                <h1 class="kernel-label">todo</h1>
+              </div>
             </div>
-            <div class="kernel-subtray kernel-filter">
-              <h1 class="kernel-label">todo</h1>
-            </div>
           </div>
+
           <div class="panel panel-default">
             <div class="panel-heading">
               <h4 class="panel-title">
                 <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">Morphology</a>
               </h4>
             </div>
-            <div id="collapse2" class="panel-collapse collapse in">
+            <div id="collapse2" class="panel-collapse collapse">
               <div class="kernel-subtray kernel-morphology">
                 <h1 class="kernel-label">Dilation</h1>
               </div>
@@ -112,6 +113,7 @@
               </div>
             </div>
           </div><!-- panel -->
+
           <div class="panel panel-default">
             <div class="panel-heading">
               <h4 class="panel-title">
@@ -122,6 +124,7 @@
               <div class="panel-body">TODO</div>
             </div>
           </div><!-- panel -->
+
         </div> <!-- accordion -->
       </div>
     </div>
