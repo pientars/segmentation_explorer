@@ -8,11 +8,16 @@ def index():
   return render_template('index.html')
 
 
-@app.route('/submit/', methods=['POST'])
+@app.route('/sample/', methods=['POST'])
 def query():
   if request.method == 'POST':
-    a = 0
-  return json.dumps(results)
+    data = json.loads(request.data)
+    go_okay = True
+    try:
+      model.run_set_on_batch(data['filenames'], data['out_dir'], data['pipeline'])
+    except:
+      go_okay = False
+  return json.dumps(go_okay)
   return None
 
 if __name__ == '__main__':
