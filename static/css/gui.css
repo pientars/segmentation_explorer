@@ -2,6 +2,11 @@ body {
   font-family: 'Open Sans', sans-serif;
 }
 
+.dashboard-container{
+  padding-top: 50px;
+  height: 100%;
+}
+
 #title-text {
   font-size: 25px;
   font-family: 'Bowlby One SC', cursive;
@@ -23,20 +28,72 @@ body {
   padding-top: 8px;
 }
 
-
-#run-batch-button {
-  padding-top: 8px;
-}
 #batch-glyph {
   padding-left: 5px;
 }
 
 #kernel-tray {
-  border-color: #afafaf;
-  border-right-style: solid;
+  border-right: 1px solid #dddddd;
+  height: 100%;
+}
+
+.outer-kernel-tray {
+  /*border: 1px solid #aaa;
+  border-radius: 5px;
+  background-color: #fff;
+  background-clip: padding-box;
+  box-shadow: 0 0 3px white inset, 0 1px 1px rgba(0, 0, 0, 0.1);*/
+  margin-top: 15px;
+  color: #444;
+  height: 95%;
+}
+
+.kernel-subtray {
+  margin: 8px auto;
+  background-color: #dddddd;
+  border-radius: 5px;
+  border: 1px solid #000;
+  width: 80%;
+  min-height: 40px;
+  cursor: move;
+  cursor: grab;
+  cursor: -moz-grab;
+  cursor: -webkit-grab;
+}
+
+.kernel-label {
+  font-size: 20px;
+  margin: 10px 0px 10px 0px;
+  text-align: center;
 }
 
 #pipeline-tray {
-  border-color: #afafaf;
-  border-right-style: solid;
+  border-right: 1px solid #dddddd;
+  height: 100%;
+}
+
+.pipeline-inner-tray {
+  height: 95%;
+  background-color: rgba(160,160,160,.3);
+  border-radius: 5px;
+}
+
+.pipeline-title {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 20px;
+  text-align: center;
+}
+
+html,body,.container {
+    height:100%;
+}
+
+.full-row {
+  height: 100%;
+}
+
+.arrow-svg {
+  height:100%;
+  position: absolute;
+  z-index: -100;
 }

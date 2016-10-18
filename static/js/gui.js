@@ -15,6 +15,26 @@ $(document).ready( function() {
     } else {
       if( log ) alert(log);
     }
-
   });
+
+  dragula([document.getElementById('collapse1'), document.getElementById('pipeline-inner-tray')], {
+    copy: function (el, source) {
+    return source === document.getElementById('collapse1')
+  },
+  accepts: function (el, target) {
+    return target !== document.getElementById('collapse1')
+  },
+    removeOnSpill: true
+  });
+
+  var pipe_width = $('#pipeline-tray').width()
+  var pipe_height = $('#pipeline-tray').height()
+  d3.select('.arrow-svg').append('line')
+    .attr('x1', pipe_width/2)
+    .attr('y1', 10)
+    .attr('x2', pipe_width/2)
+    .attr('y2', pipe_height-150)
+    .attr('marker-end', 'url(#arrow)')
+    .style('stroke-width', '25')
+    .style('stroke', '#aaaaaa');
 });

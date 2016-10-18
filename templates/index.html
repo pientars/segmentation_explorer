@@ -7,9 +7,11 @@
   <script src="static/js/external/jquery-ui.min.js"></script>
   <script src="static/js/external/chosen.jquery.min.js"></script>
   <script src="static/js/external/bootstrap.min.js"></script>
+  <script src="static/js/external/dragula.min.js"></script>
   <link rel="stylesheet" type="text/css" href="/static/css/external/jquery-ui.min.css">
   <link rel="stylesheet" type="text/css" href="/static/css/external/bootstrap.min.css">
   <link rel="stylesheet" type="text/css" href="/static/css/external/bootstrap-theme.min.css">
+  <link rel="stylesheet" type="text/css" href="/static/css/external/dragula.min.css">
   <link rel="stylesheet" type="text/css" href="/static/css/gui.css">
   <link href="https://fonts.googleapis.com/css?family=Bowlby+One+SC|Open+Sans" rel="stylesheet">
 </head>
@@ -77,15 +79,68 @@
   </div>
 <!-- BODY DIV -->
 <div class="container-fluid dashboard-container">
-  <div class="col-sm-2" id="kernel-tray">
-    <div class="outer-kernel-tray">
+  <div class="row full-row">
+    <div class="col-sm-2" id="kernel-tray">
+      <div class="outer-kernel-tray">
+        <div class="panel-group" id="accordion">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">Filters</a>
+              </h4>
+            </div>
+          </div>
+          <div id="collapse1" class="panel-collapse collapse">
+            <div class="kernel-subtray">
+              <h1 class="kernel-label">Gaussian</h1>
+            </div>
+            <div class="kernel-subtray">
+              <h1 class="kernel-label">todo</h1>
+            </div>
+          </div>
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">Morphology</a>
+              </h4>
+            </div>
+            <div id="collapse2" class="panel-collapse collapse in">
+              <div class="kernel-subtray">
+                <h1 class="kernel-label">Dilation</h1>
+              </div>
+              <div class="kernel-subtray">
+                <h1 class="kernel-label">Closing</h1>
+              </div>
+            </div>
+          </div><!-- panel -->
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapse3">Transform</a>
+              </h4>
+            </div>
+            <div id="collapse3" class="panel-collapse collapse">
+              <div class="panel-body">TODO</div>
+            </div>
+          </div><!-- panel -->
+        </div> <!-- accordion -->
+      </div>
     </div>
-  </div>
-  <div class="col-sm-2" id="pipeline-tray">
-  </div>
-  <div class="col-sm-8" id="demo-tray">
-  </div>
-
+    <div class="col-sm-2" id="pipeline-tray">
+      <h1 class="pipeline-title">Pipeline</h1>
+      <svg class="arrow-svg">
+        <defs>
+            <marker id="arrow" markerWidth="10" markerHeight="10" refx="0" refy="3" orient="auto" markerUnits="strokeWidth">
+              <path d="M0,2 L0,4 L2,3 z" fill="#aaaaaa" />
+            </marker>
+          </defs>
+      </svg>
+      <div class="pipeline-inner-tray" id="pipeline-inner-tray">
+      </div>
+    </div>
+    <div class="col-sm-8" id="demo-tray">
+    </div>
+  </div> <!-- ROW -->
 </div>
 <script src="/static/js/gui.js"></script>
 </body>
