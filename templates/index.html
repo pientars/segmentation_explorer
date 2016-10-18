@@ -46,19 +46,18 @@
           <input type="text" class="form-control" placeholder="Select sample image..." readonly>
         </div>
       </div>
-      <div class="col-sm-1"id="run-batch-button">
-        <div class="collapse navbar-collapse" id="button-menu" >
-
-          <span class="btn btn-primary">Run Batch <span class="glyphicon glyphicon-duplicate" aria-hidden="true" id="batch-glyph"></span> </span>
-        </div><!-- /.navbar-collapse -->
+      <div class="col-sm-2" id="run-button-menu">
+        <span class="btn btn-primary pull-left" id="run-button">Run Samples <span class="glyphicon glyphicon-play" aria-hidden="true" id="batch-glyph"></span>
+         </span>
+        <span class="btn btn-primary pull-right" id="run-batch-button">Run Batch <span class="glyphicon glyphicon-duplicate" aria-hidden="true" id="batch-glyph"></span> </span>
       </div>
-      <div class="col-sm-1">
+      <!-- <div class="col-sm-1">
         <div class="collapse navbar-collapse pull-right" id="run-batch-button">
           <button type="button" id='help-button' class="btn btn-default pull-right" data-toggle="modal" data-target="#myModal">
             Help <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
           </button>
-        </div><!-- /.navbar-collapse -->
-      </div>
+        </div>
+      </div> -->
     </div><!-- /.container-fluid -->
   </nav>
   <!-- Modal -->
@@ -91,10 +90,10 @@
             </div>
           </div>
           <div id="collapse1" class="panel-collapse collapse">
-            <div class="kernel-subtray">
+            <div class="kernel-subtray  kernel-filter">
               <h1 class="kernel-label">Gaussian</h1>
             </div>
-            <div class="kernel-subtray">
+            <div class="kernel-subtray kernel-filter">
               <h1 class="kernel-label">todo</h1>
             </div>
           </div>
@@ -105,10 +104,10 @@
               </h4>
             </div>
             <div id="collapse2" class="panel-collapse collapse in">
-              <div class="kernel-subtray">
+              <div class="kernel-subtray kernel-morphology">
                 <h1 class="kernel-label">Dilation</h1>
               </div>
-              <div class="kernel-subtray">
+              <div class="kernel-subtray kernel-morphology">
                 <h1 class="kernel-label">Closing</h1>
               </div>
             </div>
@@ -127,11 +126,11 @@
       </div>
     </div>
     <div class="col-sm-2" id="pipeline-tray">
-      <h1 class="pipeline-title">Pipeline</h1>
+      <h1 class="pipeline-title">Pipeline </h1>
       <svg class="arrow-svg">
         <defs>
             <marker id="arrow" markerWidth="10" markerHeight="10" refx="0" refy="3" orient="auto" markerUnits="strokeWidth">
-              <path d="M0,2 L0,4 L2,3 z" fill="#aaaaaa" />
+              <path d="M0,2 L0,4 L2,3 z" fill="#e0e0e0" />
             </marker>
           </defs>
       </svg>

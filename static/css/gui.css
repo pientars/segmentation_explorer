@@ -24,7 +24,7 @@ body {
   padding-top: 8px;
 }
 
-#run-batch-button {
+#run-button-menu{
   padding-top: 8px;
 }
 
@@ -52,7 +52,7 @@ body {
   margin: 8px auto;
   background-color: #dddddd;
   border-radius: 5px;
-  border: 1px solid #000;
+  border: 1px solid #607D8B;
   width: 80%;
   min-height: 40px;
   cursor: move;
@@ -61,9 +61,22 @@ body {
   cursor: -webkit-grab;
 }
 
+.kernel-morphology {
+  background-color: #E6EE9C;
+}
+
+.kernel-filter {
+  background-color: #C5CAE9;
+}
+
+.kernel-transform {
+  background-color: #FFE082;
+}
+
 .kernel-label {
   font-size: 20px;
   margin: 10px 0px 10px 0px;
+  /*padding-top: 10px;*/
   text-align: center;
 }
 
@@ -90,6 +103,10 @@ html,body,.container {
 
 .full-row {
   height: 100%;
+}
+
+#run-button {
+  position: absolute;
 }
 
 .arrow-svg {
