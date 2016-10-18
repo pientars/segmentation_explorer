@@ -1,3 +1,8 @@
+var params = {},
+    c_params = 0,
+    files = ['C:\\Users\\Hitchens\\Documents\\mentat_data\\buildings.jpg'],
+    out_dir = 'C:\\Users\\Hitchens\\Documents\\mentat_data\\test'
+
 $(document).on('change', ':file', function() {
   var input = $(this),
       numFiles = input.get(0).files ? input.get(0).files.length : 1,
@@ -27,7 +32,7 @@ $(document).ready( function() {
     return target !== document.getElementById('collapse1')
   },
     removeOnSpill: true
-  });
+  }).on('drop', on_drop);
 
   dragula([document.getElementById('collapse2'), document.getElementById('pipeline-inner-tray')], {
     copy: function (el, source) {
@@ -37,7 +42,7 @@ $(document).ready( function() {
     return target !== document.getElementById('collapse2')
   },
     removeOnSpill: true
-  });
+  }).on('drop', on_drop);
 
   dragula([document.getElementById('collapse3'), document.getElementById('pipeline-inner-tray')], {
     copy: function (el, source) {
@@ -47,7 +52,7 @@ $(document).ready( function() {
     return target !== document.getElementById('collapse3')
   },
     removeOnSpill: true
-  });
+  }).on('drop', on_drop);
 
   var pipe_width = $('#pipeline-tray').width()
   var pipe_height = $('#pipeline-tray').height()
@@ -59,20 +64,38 @@ $(document).ready( function() {
     .attr('marker-end', 'url(#arrow)')
     .style('stroke-width', '25')
     .style('stroke', '#e0e0e0');
-
   $('#run-button').on('click', run_samples )
 });
 
+function on_drop(el){
+  el.className += ' moved';
+  el.id = 'moved-'+c_params;
+  name = $(el).find('h1.kernel-label').text().toLowerCase();
+  switch (name) {
+    case 'gaussian':
+      params['moved-'+c_params] = {'sigma':1.0, 'mode':'nearest'}
+      break;
+  }
+  c_params += 1
+}
+
 function run_samples(d){
   var trilden = [];
-  console.log($('#pipeline-inner-tray > div > h1.kernel-label').contents())
   $('#pipeline-inner-tray > div > h1.kernel-label').contents().each(function(d){
     trilden.push({
-      'name': $(this).text(),
+      'name': $(this).text().toLowerCase(),
+      'params':params['moved-'+d]
     });
   });
-
-  trilden.forEach(function(d){
+  console.log(trilden)
+  post_data = {'filenames':files, 'pipeline':trilden, 'out_dir':out_dir};
+  d3.json('/batch/').post(
+  JSON.stringify(post_data), function(error, d) {
+    $("body").css("cursor", "default")
+    if (error) {
+      alert('SERVER ERROR DERP!')
+    }
     console.log(d)
-  })
+
+  });
 }

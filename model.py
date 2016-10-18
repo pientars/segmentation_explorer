@@ -4,7 +4,7 @@ import os
 
 
 def run_set_on_batch(filenames, out_dir, pipeline):
-  # is outdir there?
+  # is out_dir there?
   if not os.path.exists(out_dir):
     os.mkdir(out_dir)
 
@@ -17,16 +17,17 @@ def run_set_on_batch(filenames, out_dir, pipeline):
 def apply_pipeline(im, pipeline):
   for pip in pipeline:
     name = pip['name']
+    pms = pip['params']
     if (name == 'gaussian'):
-      im = filters.gaussian(im, sigma=pip['sigma'], mode=pip['mode'])
+      im = filters.gaussian(im, sigma=pms['sigma'], mode=pms['mode'])
     elif (name == 'gabor'):
-      im = filters.gaussian(im, sigma=pip['sigma'], mode=pip['mode'])
+      im = filters.gaussian(im, sigma=pms['sigma'], mode=pms['mode'])
     else:
       print '$$$ Error: ' + name + ' not valid kernel.'
   return im
 
 if __name__ == '__main__':
   fn = ['C:\Users\Hitchens\Documents\mentat_data\\buildings.jpg', 'C:\Users\Hitchens\Documents\mentat_data\\arth.jpg', 'C:\Users\Hitchens\Documents\mentat_data\\pennywise.jpg']
-  pipez = [{'name':'gaussian', 'sigma':1, 'mode':'nearest'}, {'name':'gaussian', 'sigma':1, 'mode':'nearest'}, {'name':'gaussian', 'sigma':1, 'mode':'nearest'}]
+  pipez = [{'name':'gaussian', 'params':{'sigma':1, 'mode':'nearest'}}]
   out_dir = 'C:\Users\Hitchens\Documents\mentat_data\\test'
   run_set_on_batch(fn, out_dir, pipez)

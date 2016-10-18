@@ -8,7 +8,7 @@ def index():
   return render_template('index.html')
 
 
-@app.route('/sample/', methods=['POST'])
+@app.route('/batch/', methods=['POST'])
 def query():
   if request.method == 'POST':
     data = json.loads(request.data)
