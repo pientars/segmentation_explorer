@@ -39,13 +39,13 @@ def apply_pipeline(im, pipeline):
       im = filters.roberts(im)
     # Morphology
     elif (name == 'closing'):
-      im = filters.closing(im)
+      im = morphology.closing(im)
     elif (name == 'dilation'):
-      im = filters.dilation(im)
+      im = morphology.dilation(im)
     elif (name == 'erosion'):
-      im = filters.erosion(im)
+      im = morphology.erosion(im)
     elif (name == 'opening'):
-      im = filters.opening(im)
+      im = morphology.opening(im)
     # Transforms
     elif (name == 'rgb2gray'):
       im = color.rgb2gray(im)
@@ -64,6 +64,7 @@ def copy_sample_to_server(path, fn):
 
 if __name__ == '__main__':
   fn = ['/Users/Astraeus/Documents/mentat_data/arth.jpg']
-  pipez = [{'name':'gaussian', 'params':{'sigma':1, 'mode':'nearest'}}]
+  # pipez = [{'name':'gaussian', 'params':{'sigma':1, 'mode':'nearest'}}]
+  pipez = [{'name':'dilation', 'params':{}}]
   out_dir = '/Users/Astraeus/Documents/mentat_data/output/'
   run_sample('/Users/Astraeus/Documents/mentat_data/', 'arth.jpg', pipez)
