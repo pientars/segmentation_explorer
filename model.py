@@ -1,7 +1,7 @@
 import numpy
 from skimage import io, feature, filters, morphology
 import os
-
+from shutil import copyfile
 
 def run_set_on_batch(filenames, out_dir, pipeline):
   # is out_dir there?
@@ -25,6 +25,11 @@ def apply_pipeline(im, pipeline):
     else:
       print '$$$ Error: ' + name + ' not valid kernel.'
   return im
+
+def copy_sample_to_server(path, fn):
+  print 'Copying '+os.path.join(path,fn)+' to '+ os.path.join('/static/sample/',fn)
+  copyfile(os.path.join(path,fn), os.path.join('/static/sample/',fn) )
+
 
 if __name__ == '__main__':
   fn = ['/Users/Astraeus/Documents/mentat_data/arth.jpg']

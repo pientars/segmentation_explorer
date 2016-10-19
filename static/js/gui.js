@@ -15,11 +15,23 @@ $(document).on('change', ':file', function() {
 });
 
 $(document).ready( function() {
+
   $(':file').on('fileselect', function(event, numFiles, label) {
     var input = $(this).parents('.input-group').find(':text'),
         log = numFiles > 1 ? numFiles + ' files selected' : label;
 
-    d
+    input_dir = $('#input-dir-input').val();
+    out_dir = $('#output-dir-input').val();
+    sample_image = $('#sample-input').val();
+    d3.select('.sample-tray').style('opacity', 1);
+
+
+    post_data = {'path':input_dir, 'filename':sample_image};
+    d3.json('/set_sample/').post(
+      JSON.stringify(post_data), function(error, d) {
+      $('.sample-img').attr('src', '/static/sample/'+sample_image);
+    });
+
 
     if( input.length ) {
       input.val(log);
@@ -69,7 +81,6 @@ $(document).ready( function() {
     .style('stroke-width', '25')
     .style('stroke', '#e0e0e0');
 
-  $
 
   $('#run-button').on('click', run_samples )
 });

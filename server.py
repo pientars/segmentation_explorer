@@ -7,6 +7,12 @@ app = Flask(__name__)
 def index():
   return render_template('index.html')
 
+@app.route('/set_sample/', methods=['POST'])
+def set_sample():
+  if request.method == 'POST':
+    data = json.loads(request.data)
+    print data
+    model.copy_sample_to_server(data['path'], data['filename'])
 
 @app.route('/batch/', methods=['POST'])
 def query():
