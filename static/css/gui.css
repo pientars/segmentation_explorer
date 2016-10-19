@@ -116,8 +116,6 @@ html,body,.container {
 }
 
 .sample-tray {
-  /*height: 100%;*/
-  /*width: 100%;*/
-  overflow: scroll;
+  overflow: overflow;
   opacity: 0;
 }

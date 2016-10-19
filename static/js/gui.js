@@ -33,7 +33,6 @@ $(document).ready( function() {
       $('.sample-img').attr('src', '/static/sample/'+sample_image+'?'+d.getTime());
     });
 
-
     if( input.length ) {
       input.val(log);
     } else {
@@ -95,6 +94,9 @@ function on_drop(el){
       params['moved-'+c_params] = {'sigma':1.0, 'mode':'nearest'}
       break;
   }
+  if (sample_image != '') {
+    run_samples()
+  }
   c_params += 1
 }
 
@@ -132,7 +134,7 @@ function run_batch(d){
 }
 
 
-function run_samples(d){
+function run_samples(){
   input_dir = $('#input-dir-input').val();
   if (input_dir.length === 0) {
     alert('Enter a batch directory.');
