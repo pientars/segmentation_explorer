@@ -3,6 +3,12 @@ from skimage import io, feature, filters, morphology
 import os
 from shutil import copyfile
 
+
+def run_sample(path, filename, pipeline):
+  image = io.imread(os.path.join(path,filename))
+  new_image = apply_pipeline(image, pipeline)
+  io.imsave(os.path.join(os.getcwd(),'static/sample/', filename), new_image)
+
 def run_set_on_batch(filenames, out_dir, pipeline):
   # is out_dir there?
   if not os.path.exists(out_dir):
@@ -27,9 +33,13 @@ def apply_pipeline(im, pipeline):
   return im
 
 def copy_sample_to_server(path, fn):
-  print 'Copying '+os.path.join(path,fn)+' to '+ os.path.join('/static/sample/',fn)
-  copyfile(os.path.join(path,fn), os.path.join('/static/sample/',fn) )
-
+  print os.getcwd()
+  print 'Copying '+os.path.join(path,fn)+' to '+ os.path.join(os.getcwd(),'static/sample/',fn)
+  try:
+    copyfile(os.path.join(path,fn), os.path.join(os.getcwd(),'static/sample/', fn))
+  except:
+    return False
+  return True
 
 if __name__ == '__main__':
   fn = ['/Users/Astraeus/Documents/mentat_data/arth.jpg']

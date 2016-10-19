@@ -22,14 +22,15 @@ $(document).ready( function() {
 
     input_dir = $('#input-dir-input').val();
     out_dir = $('#output-dir-input').val();
-    sample_image = $('#sample-input').val();
+    sample_image = log;
     d3.select('.sample-tray').style('opacity', 1);
 
 
-    post_data = {'path':input_dir, 'filename':sample_image};
+    post_data = {'path':input_dir, 'filename':log};
     d3.json('/set_sample/').post(
       JSON.stringify(post_data), function(error, d) {
-      $('.sample-img').attr('src', '/static/sample/'+sample_image);
+      d = new Date();
+      $('.sample-img').attr('src', '/static/sample/'+sample_image+'?'+d.getTime());
     });
 
 
@@ -148,14 +149,15 @@ function run_samples(d){
     });
   });
   console.log(trilden)
-  post_data = {'filenames':files, 'pipeline':trilden, 'out_dir':out_dir};
-  d3.json('/batch/').post(
+  post_data = {'filename':sample_image, 'pipeline':trilden, 'path':input_dir};
+  d3.json('/run_sample/').post(
   JSON.stringify(post_data), function(error, d) {
     $("body").css("cursor", "default")
     if (error) {
       alert('SERVER ERROR DERP!')
     }
     console.log(d)
-
+    d = new Date();
+    $('.sample-img').attr('src', '/static/sample/'+sample_image+'?'+d.getTime());
   });
 }
