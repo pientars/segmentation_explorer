@@ -1,5 +1,5 @@
 import numpy
-from skimage import io, feature, filters, morphology
+from skimage import io, feature, filters, morphology, color
 import os
 from shutil import copyfile
 
@@ -24,10 +24,31 @@ def apply_pipeline(im, pipeline):
   for pip in pipeline:
     name = pip['name']
     pms = pip['params']
-    if (name == 'gaussian'):
+    if (name == 'gabor'):
+      im = filters.gabor(im, frequency=pms['frequency'],
+                             theta=pms['theta'],
+                             bandwidth=pms['bandwidth'],
+                             mode=pms['mode'])
+    elif (name == 'gaussian'):
       im = filters.gaussian(im, sigma=pms['sigma'], mode=pms['mode'])
-    elif (name == 'gabor'):
-      im = filters.gaussian(im, sigma=pms['sigma'], mode=pms['mode'])
+    elif (name == 'median'):
+      im = filters.median(im)
+    elif (name == 'scharr'):
+      im = filters.scharr(im)
+    elif (name == 'roberts'):
+      im = filters.roberts(im)
+    # Morphology
+    elif (name == 'closing'):
+      im = filters.closing(im)
+    elif (name == 'dilation'):
+      im = filters.dilation(im)
+    elif (name == 'erosion'):
+      im = filters.erosion(im)
+    elif (name == 'opening'):
+      im = filters.opening(im)
+    # Transforms
+    elif (name == 'rgb2gray'):
+      im = color.rgb2gray(im)
     else:
       print '$$$ Error: ' + name + ' not valid kernel.'
   return im
@@ -45,4 +66,4 @@ if __name__ == '__main__':
   fn = ['/Users/Astraeus/Documents/mentat_data/arth.jpg']
   pipez = [{'name':'gaussian', 'params':{'sigma':1, 'mode':'nearest'}}]
   out_dir = '/Users/Astraeus/Documents/mentat_data/output/'
-  run_set_on_batch(fn, out_dir, pipez)
+  run_sample('/Users/Astraeus/Documents/mentat_data/', 'arth.jpg', pipez)

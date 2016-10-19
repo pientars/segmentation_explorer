@@ -26,6 +26,7 @@ def run_sample():
       model.run_sample(data['path'], data['filename'], data['pipeline'])
       go_okay = True
     except:
+      print 'Error in pipeline'
       go_okay = False
   return json.dumps(go_okay)
 

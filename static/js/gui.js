@@ -3,7 +3,13 @@ var params = {},
     files = [],
     out_dir = '',
     input_dir = '',
-    sample_image = ''
+    sample_image = '',
+    filters = ['Gabor','Gaussian', 'Median', 'Roberts', 'Scharr'],
+    morphologies = ['Closing', 'Dilation', 'Erosion', 'Opening'],
+    transforms = ['RGB2Gray', 'Rotate']
+
+add_kernel_options();
+
 
 $(document).on('change', ':file', function() {
   var input = $(this),
@@ -25,7 +31,6 @@ $(document).ready( function() {
     sample_image = log;
     d3.select('.sample-tray').style('opacity', 1);
 
-
     post_data = {'path':input_dir, 'filename':log};
     d3.json('/set_sample/').post(
       JSON.stringify(post_data), function(error, d) {
@@ -40,6 +45,24 @@ $(document).ready( function() {
     }
   });
 
+  drag_it_up();
+
+  var pipe_width = $('#pipeline-tray').width()
+  var pipe_height = $('#pipeline-tray').height()
+  d3.select('.arrow-svg').append('line')
+    .attr('x1', pipe_width/2)
+    .attr('y1', 10)
+    .attr('x2', pipe_width/2)
+    .attr('y2', pipe_height-150)
+    .attr('marker-end', 'url(#arrow)')
+    .style('stroke-width', '25')
+    .style('stroke', '#e0e0e0');
+
+
+  $('#run-button').on('click', run_samples )
+});
+
+function drag_it_up() {
   dragula([document.getElementById('collapse1'), document.getElementById('pipeline-inner-tray')], {
     copy: function (el, source) {
     return source === document.getElementById('collapse1')
@@ -69,35 +92,24 @@ $(document).ready( function() {
   },
     removeOnSpill: true
   }).on('drop', on_drop);
+}
 
-  var pipe_width = $('#pipeline-tray').width()
-  var pipe_height = $('#pipeline-tray').height()
-  d3.select('.arrow-svg').append('line')
-    .attr('x1', pipe_width/2)
-    .attr('y1', 10)
-    .attr('x2', pipe_width/2)
-    .attr('y2', pipe_height-150)
-    .attr('marker-end', 'url(#arrow)')
-    .style('stroke-width', '25')
-    .style('stroke', '#e0e0e0');
-
-
-  $('#run-button').on('click', run_samples )
-});
-
-function on_drop(el){
-  el.className += ' moved';
-  el.id = 'moved-'+c_params;
-  name = $(el).find('h1.kernel-label').text().toLowerCase();
-  switch (name) {
-    case 'gaussian':
-      params['moved-'+c_params] = {'sigma':1.0, 'mode':'nearest'}
-      break;
-  }
-  if (sample_image != '') {
-    run_samples()
-  }
-  c_params += 1
+function add_kernel_options() {
+  filters.forEach(function(filt) {
+    d3.select('#collapse1')
+      .append('div').attr('class', 'kernel-subtray kernel-filter')
+      .append('h1').attr('class', 'kernel-label').text(filt)
+  });
+  morphologies.forEach(function(filt) {
+    d3.select('#collapse2')
+      .append('div').attr('class', 'kernel-subtray kernel-morphology')
+      .append('h1').attr('class', 'kernel-label').text(filt)
+  });
+  transforms.forEach(function(filt) {
+    d3.select('#collapse3')
+      .append('div').attr('class', 'kernel-subtray kernel-transform')
+      .append('h1').attr('class', 'kernel-label').text(filt)
+  });
 }
 
 function run_batch(d){
