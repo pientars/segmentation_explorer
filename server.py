@@ -12,6 +12,7 @@ def index():
 def query():
   if request.method == 'POST':
     data = json.loads(request.data)
+    print data
     go_okay = True
     try:
       model.run_set_on_batch(data['filenames'], data['out_dir'], data['pipeline'])

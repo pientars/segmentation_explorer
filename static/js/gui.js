@@ -17,7 +17,9 @@ $(document).on('change', ':file', function() {
 $(document).ready( function() {
   $(':file').on('fileselect', function(event, numFiles, label) {
     var input = $(this).parents('.input-group').find(':text'),
-      log = numFiles > 1 ? numFiles + ' files selected' : label;
+        log = numFiles > 1 ? numFiles + ' files selected' : label;
+
+    d
 
     if( input.length ) {
       input.val(log);
@@ -67,6 +69,8 @@ $(document).ready( function() {
     .style('stroke-width', '25')
     .style('stroke', '#e0e0e0');
 
+  $
+
   $('#run-button').on('click', run_samples )
 });
 
@@ -83,7 +87,36 @@ function on_drop(el){
 }
 
 function run_batch(d){
+  input_dir = $('#input-dir-input').val();
+  if (input_dir.length === 0) {
+    alert('Enter a batch directory.');
+    return false;
+  }
+  out_dir = $('#output-dir-input').val();
+  if (out_dir.length === 0) {
+    alert('Enter an output directory.');
+    return false;
+  }
+  sample_image = $('#sample-input').val();
+  files = [input_dir+sample_image]
+  var trilden = [];
+  $('#pipeline-inner-tray > div > h1.kernel-label').contents().each(function(d){
+    trilden.push({
+      'name': $(this).text().toLowerCase(),
+      'params':params['moved-'+d]
+    });
+  });
+  console.log(trilden)
+  post_data = {'filenames':files, 'pipeline':trilden, 'out_dir':out_dir};
+  d3.json('/batch/').post(
+  JSON.stringify(post_data), function(error, d) {
+    $("body").css("cursor", "default")
+    if (error) {
+      alert('SERVER ERROR DERP!')
+    }
+    console.log(d)
 
+  });
 }
 
 
@@ -93,11 +126,7 @@ function run_samples(d){
     alert('Enter a batch directory.');
     return false;
   }
-  // out_dir = $('#output-dir-input').val();
-  // if (out_dir.length === 0) {
-  //   alert('Enter an output directory.');
-  //   return false;
-  // }
+  out_dir = $('#output-dir-input').val();
   sample_image = $('#sample-input').val();
   files = [input_dir+sample_image]
   var trilden = [];

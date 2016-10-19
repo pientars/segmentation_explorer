@@ -27,7 +27,7 @@ def apply_pipeline(im, pipeline):
   return im
 
 if __name__ == '__main__':
-  fn = ['C:\Users\Hitchens\Documents\mentat_data\\buildings.jpg', 'C:\Users\Hitchens\Documents\mentat_data\\arth.jpg', 'C:\Users\Hitchens\Documents\mentat_data\\pennywise.jpg']
+  fn = ['/Users/Astraeus/Documents/mentat_data/arth.jpg']
   pipez = [{'name':'gaussian', 'params':{'sigma':1, 'mode':'nearest'}}]
-  out_dir = 'C:\Users\Hitchens\Documents\mentat_data\\test'
+  out_dir = '/Users/Astraeus/Documents/mentat_data/output/'
   run_set_on_batch(fn, out_dir, pipez)
