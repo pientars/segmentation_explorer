@@ -145,6 +145,55 @@ function run_batch(d){
   });
 }
 
+contextMenuShowing = false;
+
+d3.select("body").on('contextmenu',function (d,i) {
+    if(contextMenuShowing) {
+        d3.event.preventDefault();
+        d3.select(".popup").remove();
+        contextMenuShowing = false;
+    } else {
+        d3_target = d3.select(d3.event.target);
+        if (d3_target.classed("moved")) {
+            d3.event.preventDefault();
+            contextMenuShowing = true;
+            d = params[d3_target.attr('id')];
+            console.log(d)
+            // Build the popup
+
+            canvas = d3.select(".dashboard-container");
+            mousePosition = d3.mouse(canvas.node());
+
+            popup = canvas.append("div")
+                .attr("class", "popup")
+                .style("left", mousePosition[0] + "px")
+                .style("top", mousePosition[1] + "px");
+            popup.append("h2").text('BARF');
+            popup.append("p").text(
+                "The " +  " division (wearing " + " uniforms) had " + " casualties during the show's original run.")
+
+            canvasSize = [
+                canvas.node().offsetWidth,
+                canvas.node().offsetHeight
+            ];
+
+            popupSize = [
+                popup.node().offsetWidth,
+                popup.node().offsetHeight
+            ];
+
+            if (popupSize[0] + mousePosition[0] > canvasSize[0]) {
+                popup.style("left","auto");
+                popup.style("right",0);
+            }
+
+            if (popupSize[1] + mousePosition[1] > canvasSize[1]) {
+                popup.style("top","auto");
+                popup.style("bottom",0);
+            }
+        }
+    }
+});
 
 function run_samples(){
   input_dir = $('#input-dir-input').val();
@@ -156,11 +205,15 @@ function run_samples(){
   sample_image = $('#sample-input').val();
   files = [input_dir+sample_image]
   var trilden = [];
-  $('#pipeline-inner-tray > div > h1.kernel-label').contents().each(function(d){
-    trilden.push({
-      'name': $(this).text().toLowerCase(),
-      'params':params['moved-'+d]
-    });
+
+  $('#pipeline-inner-tray > div').each(function(i, d){
+    var id = $(d).attr('id'),
+        label = $(d).children('h1.kernel-label').text();
+        trilden.push({
+          'name': label.toLowerCase(),
+          'params':params[id]
+        });
+        console.log(label)
   });
   console.log(trilden)
   post_data = {'filename':sample_image, 'pipeline':trilden, 'path':input_dir};
