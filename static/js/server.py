@@ -15,9 +15,9 @@ def run_sample(data):
 
 def batch(data):
   go_okay = False
-  print data
+  model.run_set_on_batch(data['input_dir'], data['out_dir'], data['pipeline'])
   try:
-    model.run_set_on_batch(data['filenames'], data['out_dir'], data['pipeline'])
+    model.run_set_on_batch(data['input_dir'], data['out_dir'], data['pipeline'])
     go_okay = True
   except:
     go_okay = False
@@ -29,6 +29,7 @@ def read_in():
 
 def main():
   data = read_in()
+  print data
   func_code = data['func_code']
   if func_code == 'sample':
     exit(run_sample(data))

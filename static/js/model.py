@@ -12,10 +12,14 @@ def run_sample(path, filename, pipeline):
   new_image = apply_pipeline(image, pipeline)
   io.imsave(os.path.join(os.getcwd(),'static/sample/', filename), new_image)
 
-def run_set_on_batch(filenames, out_dir, pipeline):
+
+
+def run_set_on_batch(input_dir, out_dir, pipeline):
   # is out_dir there?
   if not os.path.exists(out_dir):
     os.mkdir(out_dir)
+
+  filenames = [os.path.join(input_dir, f) for f in os.listdir(input_dir) if os.path.isfile(os.path.join(input_dir, f)) and is_img_file(f)]
 
   for fil in filenames:
     fn = os.path.basename(fil)
@@ -55,6 +59,11 @@ def apply_pipeline(im, pipeline):
     else:
       print '$$$ Error: ' + name + ' not valid kernel.'
   return im
+
+def is_img_file(f_str):
+  if len(f_str) < 3: return False
+  if f_str[-4:] in ['.png', '.jpg', '.bmp', 'jpeg']: return True
+  return False
 
 def copy_sample_to_server(path, fn):
   print os.getcwd()

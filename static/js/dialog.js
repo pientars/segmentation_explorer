@@ -32,7 +32,7 @@ document.getElementById('sample-file-btn').addEventListener('click',function(){
 },false);
 
 document.getElementById('output-dir-btn').addEventListener('click',function(){
-    dialog.showOpenDialog( {properties:['openDirectory']},
+    dialog.showOpenDialog( {properties:['openDirectory', 'createDirectory']},
       function (fileNames) {
         if(fileNames === undefined){
             console.log("No file selected");

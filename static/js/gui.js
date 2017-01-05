@@ -29,6 +29,8 @@ function run_gui(){
     .style('stroke', '#e0e0e0');
 
   $('#run-button').on('click', run_samples )
+  $('#run-batch-button').on('click', run_batch )
+  $('#run-code-button').on('click', run_code )
 
   d3.select("body").on('contextmenu',function (d,i) {
       if(contextMenuShowing) {
@@ -97,37 +99,52 @@ function add_kernel_options() {
   });
 }
 
-function run_batch(d){
-  // input_dir = $('#input-dir-input').val();
-  // if (input_dir.length === 0) {
-  //   alert('Enter a batch directory.');
-  //   return false;
-  // }
-  // out_dir = $('#output-dir-input').val();
-  // if (out_dir.length === 0) {
-  //   alert('Enter an output directory.');
-  //   return false;
-  // }
-  // sample_image = $('#sample-input').val();
-  // files = [input_dir+sample_image]
-  // var trilden = [];
-  // $('#pipeline-inner-tray > div > h1.kernel-label').contents().each(function(d){
-  //   trilden.push({
-  //     'name': $(this).text().toLowerCase(),
-  //     'params':params['moved-'+d]
-  //   });
-  // });
-  // console.log(trilden)
-  // post_data = {'filenames':files, 'pipeline':trilden, 'out_dir':out_dir};
-  // d3.json('/batch/').post(
-  // JSON.stringify(post_data), function(error, d) {
-  //   $("body").css("cursor", "default")
-  //   if (error) {
-  //     alert('SERVER ERROR DERP!')
-  //   }
-  //   console.log(d)
 
-  // });
+function get_pipeline_data(){
+  files = [input_dir+sample_image]
+  var trilden = [];
+  $('#pipeline-inner-tray > div > h1.kernel-label').contents().each(function(d){
+    trilden.push({
+      'name': $(this).text().toLowerCase(),
+      'params':params['moved-'+d]
+    });
+  });
+  pipeline_data = {'filenames':files,
+               'pipeline':trilden,
+               'out_dir':out_dir};
+  return pipeline_data;
+}
+
+function run_batch(){
+  input_dir = $('#batch-dir-input').val();
+  if (input_dir.length === 0) {
+    alert('Enter a batch directory.');
+    return false;
+  }
+  out_dir = $('#output-dir-input').val();
+  if (out_dir.length === 0) {
+    out_dir = path.join(input_dir, '/output/');
+  }
+  sample_image = $('#sample-file-file').val();
+  files = [input_dir+sample_image]
+  var trilden = [];
+  $('#pipeline-inner-tray > div > h1.kernel-label').contents().each(function(d){
+    trilden.push({
+      'name': $(this).text().toLowerCase(),
+      'params':params['moved-'+d]
+    });
+  });
+  pipeline_data = {'input_dir':input_dir,
+                   'filenames':files,
+                   'pipeline':trilden,
+                   'out_dir':out_dir,
+                   'func_code':'batch'};
+  //TODO add a popup saying loading
+  sp.run_batch(pipeline_data, remove_loading_bar);
+}
+
+function remove_loading_bar() {
+  //TODO remove the loading bar
 }
 
 function run_samples(){
@@ -157,6 +174,10 @@ function run_samples(){
                    'path':input_dir,
                    'func_code':'sample'};
   sp.run_sample(pipeline_data, update_sample_image);
+}
+
+function run_code() {
+
 }
 
 function drag_it_up() {
