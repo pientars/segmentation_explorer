@@ -3,6 +3,9 @@ from skimage import io, feature, filters, morphology, color
 import os
 from shutil import copyfile
 
+filters_namespace = set(['gabor', 'gaussian', 'median', 'scharr', 'roberts'])
+morphology_namespace = set(['closing', 'dilation', 'opening', 'erosion'])
+color_namespace = set(['rgb2gray'])
 
 def run_sample(path, filename, pipeline):
   image = io.imread(os.path.join(path,filename))
@@ -61,6 +64,27 @@ def copy_sample_to_server(path, fn):
   except:
     return False
   return True
+
+
+def generate_pipeline_python_code(pipeline, pretty=false):
+  pipeline_str = '\ndef mentat_pipeline(im):'
+  includes = '# Place this import at the top of your python project\n# Requires python modules skimage and numpy\n from skimage import '
+  modules_used = set()
+  for pip in pipeline:
+    name = pip['name']
+    pms = pip['params']
+    if name in filters_namespace:
+      modules_used.add('filters')
+      pipeline_str += '\n    nu_im = filters.'+name+'(im)'
+    elif name in morphology_namespace:
+      modules_used.add('morphology')
+      pipeline_str += '\n    nu_im = morphology.'+name+'(im)'
+    elif name in color_namespace:
+      modules_used.add('color')
+      pipeline_str += '\n   nu_im = color.'+name+'(im)'
+    includes += ','.join(list(modules_used))
+    return includes + pipeline_str + '    return nu_im'
+
 
 if __name__ == '__main__':
   fn = ['/Users/Astraeus/Documents/mentat_data/arth.jpg']

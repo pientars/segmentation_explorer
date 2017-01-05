@@ -1,6 +1,8 @@
 /Users/Astraeus/Documents/mentat_data/
+/Users/Astraeus/Documents/mentat_data/arth.jpg
 /Users/Astraeus/Documents/mentat_data/output/
 
 
-C:\Users\Hitchens\Documents\mentat_data
+C:\Users\Hitchens\Documents\mentat_data\
+C:\Users\Hitchens\Documents\mentat_data\arth.jpg
 C:\Users\Hitchens\Documents\mentat_data\output\
