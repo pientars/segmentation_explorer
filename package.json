@@ -11,10 +11,11 @@
     "Electron",
     "segmentation"
   ],
-  "author": "GitHub",
+  "author": "Robert Pienta",
   "license": "CC0-1.0",
   "devDependencies": {
-    "electron": "^1.4.1"
+    "electron": "^1.4.1",
+    "jsonfile": "^2.0.0"
   },
   "dependencies": {
     "d3": "^3.5.6",
