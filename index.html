@@ -10,15 +10,13 @@
     require('./static/js/external/jquery-ui.min.js');
     require('./static/js/external/bootstrap.min.js');
     window.dragula = require('./static/js/external/dragula.min.js');
-    var hljs = require('./static/js/external/highlight.pack.js');
-    window.hjls = hljs;
-    hljs.initHighlightOnLoad();
   </script>
+  <script src ="./static/js/external/prism.js"></script>
   <link rel="stylesheet" type="text/css" href="./static/css/external/jquery-ui.min.css">
   <link rel="stylesheet" type="text/css" href="./static/css/external/bootstrap.min.css">
   <link rel="stylesheet" type="text/css" href="./static/css/external/bootstrap-theme.min.css">
   <link rel="stylesheet" type="text/css" href="./static/css/external/dragula.min.css">
-  <link rel="stylesheet" type="text/css" href="./static/css/external/solarized-light.css">
+  <link rel="stylesheet" type="text/css" href="./static/css/external/prism.css">
   <link rel="stylesheet" type="text/css" href="./static/css/gui.css">
 
   <link href="https://fonts.googleapis.com/css?family=Bowlby+One+SC|Open+Sans" rel="stylesheet">
@@ -86,7 +84,8 @@
                    <h4 class="modal-title" id="myModalLabel">MENTAT Pipeline</h4>
               </div>
               <div class="modal-body" id="code-modal">
-                <pre class="code-pre"></pre>
+                <pre id="code-pre">
+                </pre>
               </div>
               <div class="modal-footer">
                   <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

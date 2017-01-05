@@ -178,7 +178,9 @@ function run_code() {
 }
 
 function draw_code_popup(code){
-  d3.select('.code-pre').text(code)
+  console.log([code])
+  var code_html = Prism.highlight(code, Prism.languages.python);
+  d3.select('#code-pre').html(code_html)
   $('#myModal').modal('show')
 }
 
