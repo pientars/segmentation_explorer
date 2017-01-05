@@ -32,53 +32,7 @@ function run_gui(){
   $('#run-batch-button').on('click', run_batch )
   $('#run-code-button').on('click', run_code )
 
-  d3.select("body").on('contextmenu',function (d,i) {
-      if(contextMenuShowing) {
-          d3.event.preventDefault();
-          d3.select(".popup").remove();
-          contextMenuShowing = false;
-      } else {
-          d3_target = d3.select(d3.event.target);
-          if (d3_target.classed("moved")) {
-              d3.event.preventDefault();
-              contextMenuShowing = true;
-              d = params[d3_target.attr('id')];
-              console.log(d)
-              // Build the popup
-
-              canvas = d3.select(".dashboard-container");
-              mousePosition = d3.mouse(canvas.node());
-
-              popup = canvas.append("div")
-                  .attr("class", "popup")
-                  .style("left", mousePosition[0] + "px")
-                  .style("top", mousePosition[1] + "px");
-              popup.append("h2").text('BARF');
-              popup.append("p").text(
-                  "The " +  " division (wearing " + " uniforms) had " + " casualties during the show's original run.")
-
-              canvasSize = [
-                  canvas.node().offsetWidth,
-                  canvas.node().offsetHeight
-              ];
-
-              popupSize = [
-                  popup.node().offsetWidth,
-                  popup.node().offsetHeight
-              ];
-
-              if (popupSize[0] + mousePosition[0] > canvasSize[0]) {
-                  popup.style("left","auto");
-                  popup.style("right",0);
-              }
-
-              if (popupSize[1] + mousePosition[1] > canvasSize[1]) {
-                  popup.style("top","auto");
-                  popup.style("bottom",0);
-              }
-          }
-      }
-  });
+  d3.select("body").on('contextmenu', parameter_context);
 }
 
 function add_kernel_options() {
@@ -98,8 +52,6 @@ function add_kernel_options() {
       .append('h1').attr('class', 'kernel-label').text(filt)
   });
 }
-
-
 
 function run_batch(){
   input_dir = $('#batch-dir-input').val();
@@ -125,12 +77,8 @@ function run_batch(){
                    'pipeline':trilden,
                    'out_dir':out_dir,
                    'func_code':'batch'};
-  //TODO add a popup saying loading
+  $("body").css("cursor", "progress");
   sp.run_batch(pipeline_data, remove_loading_bar);
-}
-
-function remove_loading_bar() {
-  //TODO remove the loading bar
 }
 
 function run_samples(){
@@ -159,6 +107,7 @@ function run_samples(){
                    'pipeline':trilden,
                    'path':input_dir,
                    'func_code':'sample'};
+  $("body").css("cursor", "progress");
   sp.run_sample(pipeline_data, update_sample_image);
 }
 
@@ -173,15 +122,28 @@ function run_code() {
         });
   });
   var pipeline_data = {'pipeline':trilden, 'func_code':'code'}
-  console.log(pipeline_data)
+  $("body").css("cursor", "progress");
   sp.get_pipeline_code(pipeline_data, draw_code_popup)
 }
 
+function remove_loading_bar() {
+  $("body").css("cursor", "default");
+  //TODO remove the loading bar
+}
+
 function draw_code_popup(code){
-  console.log([code])
+  $("body").css("cursor", "default");
   var code_html = Prism.highlight(code, Prism.languages.python);
   d3.select('#code-pre').html(code_html)
   $('#myModal').modal('show')
+}
+
+function update_sample_image(){
+  $("body").css("cursor", "default");
+  d = new Date();
+  var fn = sample_image.split('\\').pop().split('/').pop();
+  d3.select('.sample-tray').transition().duration(500).style('opacity', 1);
+  d3.select('.sample-img').attr('src','./static/sample/'+fn+'?'+d.getTime());
 }
 
 function drag_it_up() {
@@ -216,17 +178,73 @@ function drag_it_up() {
   }).on('drop', on_drop);
 }
 
-function update_sample_image(){
-  d = new Date();
-  var fn = sample_image.split('\\').pop().split('/').pop();
-  d3.select('.sample-tray').transition().duration(500).style('opacity', 1);
-  d3.select('.sample-img').attr('src','./static/sample/'+fn+'?'+d.getTime());
+function parameter_context(d, i) {
+  if(contextMenuShowing) {
+      d3.event.preventDefault();
+      d3.select(".popup").remove();
+      contextMenuShowing = false;
+  } else {
+      d3_target = d3.select(d3.event.target);
+      console.log(d3_target, d3_target.classed("moved"))
+      if (d3_target.classed("moved")) {
+          d3.event.preventDefault();
+          contextMenuShowing = true;
+          d = params[d3_target.attr('id')];
+          // console.log(d)
+          // Build the popup
+
+          var menu_pos = {},
+              menu_width = 0;
+          canvas = d3.select(".dashboard-container");
+          if (d3_target.classed('kernel-label')){
+            // get rents
+            var kern_subtray = d3_target.node().parentNode;
+            menu_pos = $(kern_subtray).offset();
+            menu_width = $(kern_subtray).width() + 10;
+            // console.log(menu_pos, menu_width)
+          } else {
+            menu_pos = $(d3_target.node()).offset();
+            menu_width = $(d3_target.node()).width() + 10;
+          }
+
+          // TODO obvs need to have separate templates for each params
+
+          popup = canvas.append("div")
+              .attr("class", "popup")
+              .style("left", (menu_pos.left+menu_width) + "px")
+              .style("top", menu_pos.top + "px");
+          popup.append("h2").text('BARF');
+          popup.append("p").text(
+              "The " +  " division (wearing " + " uniforms) had " + " casualties during the show's original run.")
+
+          canvasSize = [
+              canvas.node().offsetWidth,
+              canvas.node().offsetHeight
+          ];
+
+          popupSize = [
+              popup.node().offsetWidth,
+              popup.node().offsetHeight
+          ];
+
+          if (popupSize[0] + (menu_pos.left+menu_width) > canvasSize[0]) {
+              popup.style("left","auto");
+              popup.style("right",0);
+          }
+
+          if (popupSize[1] + menu_pos.top > canvasSize[1]) {
+              popup.style("top","auto");
+              popup.style("bottom",0);
+          }
+      }
+  }
 }
 
 function on_drop(el){
   el.className += ' moved';
   el.id = 'moved-'+c_params;
-  name = $(el).find('h1.kernel-label').text().toLowerCase();
+  $(el).find('h1.kernel-label').addClass('moved').attr('id', 'moved-'+c_params);
+  var name = $(el).find('h1.kernel-label').text().toLowerCase();
   switch (name) {
     case 'gabor':
       params['moved-'+c_params] = {'frequency':1.0,
