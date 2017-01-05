@@ -31,22 +31,32 @@
         </div>
       </div>
       <div class="col-sm-3">
-        <div class="file-input">
-          <input type="text" class="form-control" id="batch-dir-input" placeholder="Select batch folder...">
+        <div class="input-group file-input">
+          <label class="input-group-btn">
+            <span class="btn btn-warning" id="batch-dir-btn">
+              <span class="glyphicon glyphicon-search" aria-hidden="true" id="batch-glyph"></span>
+            </span>
+          </label>
+          <input type="text" class="form-control"  id="batch-dir-input" placeholder="Select batch folder...">
         </div>
       </div>
       <div class="col-sm-3">
-        <div class="input-group file-input" id="sample-file-group">
+        <div class="input-group file-input" >
           <label class="input-group-btn">
-            <span class="btn btn-warning">
-              Browse&hellip; <input type="file" style="display: none;" multiple>
+            <span class="btn btn-warning" id="sample-file-btn">
+              <span class="glyphicon glyphicon-search" aria-hidden="true" id="batch-glyph"></span>
             </span>
           </label>
           <input type="text" class="form-control" id="sample-file-file" placeholder="Select sample image...">
         </div>
       </div>
-      <div class="col-sm-3" id="output-dir-group">
-        <div class="file-input">
+      <div class="col-sm-3">
+        <div class="input-group file-input">
+          <label class="input-group-btn">
+            <span class="btn btn-warning" id="output-dir-btn">
+              <span class="glyphicon glyphicon-search" aria-hidden="true" id="batch-glyph"></span>
+            </span>
+          </label>
           <input type="text" class="form-control" id="output-dir-input" placeholder="Select output folder...">
         </div>
       </div>
