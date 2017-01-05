@@ -32,20 +32,20 @@
       </div>
       <div class="col-sm-3">
         <div class="file-input">
-          <input type="text" class="form-control" id="input-dir-input" placeholder="Select batch folder...">
+          <input type="text" class="form-control" id="batch-dir-input" placeholder="Select batch folder...">
         </div>
       </div>
       <div class="col-sm-3">
-        <div class="input-group file-input">
+        <div class="input-group file-input" id="sample-file-group">
           <label class="input-group-btn">
             <span class="btn btn-warning">
               Browse&hellip; <input type="file" style="display: none;" multiple>
             </span>
           </label>
-          <input type="text" class="form-control" id="sample-input" placeholder="Select sample image...">
+          <input type="text" class="form-control" id="sample-file-file" placeholder="Select sample image...">
         </div>
       </div>
-      <div class="col-sm-3">
+      <div class="col-sm-3" id="output-dir-group">
         <div class="file-input">
           <input type="text" class="form-control" id="output-dir-input" placeholder="Select output folder...">
         </div>
@@ -141,5 +141,6 @@
 <script>
   var gui = require('./static/js/gui.js');
   gui.draw_gui();
+  require('./static/js/dialog.js')
 </script>
 </body>

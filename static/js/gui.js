@@ -13,37 +13,37 @@ var params = {},
 function run_gui(){
   add_kernel_options();
 
-  $(document).on('change', ':file', function() {
-    var input = $(this),
-        numFiles = input.get(0).files ? input.get(0).files.length : 1,
-        derp = input.val()
-        console.log(derp)
-        label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
-    input.trigger('fileselect', [numFiles, label]);
-  });
+  // $(document).on('change', ':file', function() {
+  //   var input = $(this),
+  //       numFiles = input.get(0).files ? input.get(0).files.length : 1,
+  //       derp = input.val()
+  //       console.log(derp)
+  //       label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+  //   input.trigger('fileselect', [numFiles, label]);
+  // });
 
-  $(':file').on('fileselect', function(event, numFiles, label) {
-      var input = $(this).parents('.input-group').find(':text'),
-          log = numFiles > 1 ? numFiles + ' files selected' : label;
-
-      input_dir = $('#input-dir-input').val();
-      out_dir = $('#output-dir-input').val();
-      sample_image = log;
-      d3.select('.sample-tray').style('opacity', 1);
-
-      post_data = {'path':input_dir, 'filename':log};
-      d3.json('/set_sample/').post(
-        JSON.stringify(post_data), function(error, d) {
-        d = new Date();
-        $('.sample-img').attr('src', '/static/sample/'+sample_image+'?'+d.getTime());
-      });
-
-      if( input.length ) {
-        input.val(log);
-      } else {
-        if( log ) alert(log);
-      }
-  });
+  // $(':file').on('fileselect', function(event, numFiles, label) {
+  //     var input = $(this).parents('.input-group').find(':text'),
+  //         log = numFiles > 1 ? numFiles + ' files selected' : label;
+  //
+  //     input_dir = $('#input-dir-input').val();
+  //     out_dir = $('#output-dir-input').val();
+  //     sample_image = log;
+  //     d3.select('.sample-tray').style('opacity', 1);
+  //
+  //     post_data = {'path':input_dir, 'filename':log};
+  //     d3.json('/set_sample/').post(
+  //       JSON.stringify(post_data), function(error, d) {
+  //       d = new Date();
+  //       $('.sample-img').attr('src', '/static/sample/'+sample_image+'?'+d.getTime());
+  //     });
+  //
+  //     if( input.length ) {
+  //       input.val(log);
+  //     } else {
+  //       if( log ) alert(log);
+  //     }
+  // });
 
   drag_it_up();
 
@@ -111,8 +111,6 @@ function run_gui(){
 
 function add_kernel_options() {
   filters.forEach(function(filt) {
-    console.log(d3)
-    console.log(d3.select('#collapse1'), $('#collapse1'))
     d3.select('#collapse1')
       .append('div').attr('class', 'kernel-subtray kernel-filter')
       .append('h1').attr('class', 'kernel-label').text(filt)
