@@ -1,42 +1,20 @@
+var sp = require('./subprocess.js');
+var path = require('path')
+
 var params = {},
     c_params = 0,
     files = [],
-    out_dir = '',
-    input_dir = '',
-    sample_image = '',
     filters = ['Gabor','Gaussian', 'Median', 'Roberts', 'Scharr'],
     morphologies = ['Closing', 'Dilation', 'Erosion', 'Opening'],
     transforms = ['RGB2Gray', 'Rotate'],
     contextMenuShowing = false;
+let out_dir = '',
+    input_dir = '',
+    sample_image = '';
 
 
 function run_gui(){
   add_kernel_options();
-
-
-  // $(':file').on('fileselect', function(event, numFiles, label) {
-  //     var input = $(this).parents('.input-group').find(':text'),
-  //         log = numFiles > 1 ? numFiles + ' files selected' : label;
-  //
-  //     input_dir = $('#input-dir-input').val();
-  //     out_dir = $('#output-dir-input').val();
-  //     sample_image = log;
-  //     d3.select('.sample-tray').style('opacity', 1);
-  //
-  //     post_data = {'path':input_dir, 'filename':log};
-  //     d3.json('/set_sample/').post(
-  //       JSON.stringify(post_data), function(error, d) {
-  //       d = new Date();
-  //       $('.sample-img').attr('src', '/static/sample/'+sample_image+'?'+d.getTime());
-  //     });
-  //
-  //     if( input.length ) {
-  //       input.val(log);
-  //     } else {
-  //       if( log ) alert(log);
-  //     }
-  // });
-
   drag_it_up();
 
   var pipe_width = $('#pipeline-tray').width()
@@ -120,46 +98,46 @@ function add_kernel_options() {
 }
 
 function run_batch(d){
-  input_dir = $('#input-dir-input').val();
-  if (input_dir.length === 0) {
-    alert('Enter a batch directory.');
-    return false;
-  }
-  out_dir = $('#output-dir-input').val();
-  if (out_dir.length === 0) {
-    alert('Enter an output directory.');
-    return false;
-  }
-  sample_image = $('#sample-input').val();
-  files = [input_dir+sample_image]
-  var trilden = [];
-  $('#pipeline-inner-tray > div > h1.kernel-label').contents().each(function(d){
-    trilden.push({
-      'name': $(this).text().toLowerCase(),
-      'params':params['moved-'+d]
-    });
-  });
-  console.log(trilden)
-  post_data = {'filenames':files, 'pipeline':trilden, 'out_dir':out_dir};
-  d3.json('/batch/').post(
-  JSON.stringify(post_data), function(error, d) {
-    $("body").css("cursor", "default")
-    if (error) {
-      alert('SERVER ERROR DERP!')
-    }
-    console.log(d)
+  // input_dir = $('#input-dir-input').val();
+  // if (input_dir.length === 0) {
+  //   alert('Enter a batch directory.');
+  //   return false;
+  // }
+  // out_dir = $('#output-dir-input').val();
+  // if (out_dir.length === 0) {
+  //   alert('Enter an output directory.');
+  //   return false;
+  // }
+  // sample_image = $('#sample-input').val();
+  // files = [input_dir+sample_image]
+  // var trilden = [];
+  // $('#pipeline-inner-tray > div > h1.kernel-label').contents().each(function(d){
+  //   trilden.push({
+  //     'name': $(this).text().toLowerCase(),
+  //     'params':params['moved-'+d]
+  //   });
+  // });
+  // console.log(trilden)
+  // post_data = {'filenames':files, 'pipeline':trilden, 'out_dir':out_dir};
+  // d3.json('/batch/').post(
+  // JSON.stringify(post_data), function(error, d) {
+  //   $("body").css("cursor", "default")
+  //   if (error) {
+  //     alert('SERVER ERROR DERP!')
+  //   }
+  //   console.log(d)
 
-  });
+  // });
 }
 
 function run_samples(){
-  input_dir = $('#input-dir-input').val();
+  input_dir = $('#batch-dir-input').val();
   if (input_dir.length === 0) {
     alert('Enter a batch directory.');
     return false;
   }
   out_dir = $('#output-dir-input').val();
-  sample_image = $('#sample-input').val();
+  sample_image = $('#sample-file-file').val();
   files = [input_dir+sample_image]
   var trilden = [];
 
@@ -172,18 +150,16 @@ function run_samples(){
         });
         console.log(label)
   });
-  console.log(trilden)
-  post_data = {'filename':sample_image, 'pipeline':trilden, 'path':input_dir};
-  d3.json('/run_sample/').post(
-  JSON.stringify(post_data), function(error, d) {
-    $("body").css("cursor", "default")
-    if (error) {
-      alert('SERVER ERROR DERP!')
-    }
-    console.log(d)
-    d = new Date();
-    $('.sample-img').attr('src', '/static/sample/'+sample_image+'?'+d.getTime());
-  });
+  var fn = sample_image.split('\\').pop().split('/').pop();
+  var sample_dir = path.join(process.cwd(), '/static/sample/', fn)
+  pipeline_data = {'filename':sample_dir,
+                   'pipeline':trilden,
+                   'path':input_dir,
+                   'func_code':'sample'};
+  sp.run_sample(pipeline_data);
+  d = new Date();
+  d3.select('.sample-tray').transition().duration(500).style('opacity', 1);
+  d3.select('.sample-img').attr('src','./static/sample/'+fn);
 }
 
 function drag_it_up() {
