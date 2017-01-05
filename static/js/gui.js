@@ -6,43 +6,43 @@ var params = {},
     sample_image = '',
     filters = ['Gabor','Gaussian', 'Median', 'Roberts', 'Scharr'],
     morphologies = ['Closing', 'Dilation', 'Erosion', 'Opening'],
-    transforms = ['RGB2Gray', 'Rotate']
+    transforms = ['RGB2Gray', 'Rotate'],
+    contextMenuShowing = false;
 
-add_kernel_options();
 
+function run_gui(){
+  add_kernel_options();
 
-$(document).on('change', ':file', function() {
-  var input = $(this),
-      numFiles = input.get(0).files ? input.get(0).files.length : 1,
-      derp = input.val()
-      console.log(derp)
-      label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
-  input.trigger('fileselect', [numFiles, label]);
-});
-
-$(document).ready( function() {
+  $(document).on('change', ':file', function() {
+    var input = $(this),
+        numFiles = input.get(0).files ? input.get(0).files.length : 1,
+        derp = input.val()
+        console.log(derp)
+        label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+    input.trigger('fileselect', [numFiles, label]);
+  });
 
   $(':file').on('fileselect', function(event, numFiles, label) {
-    var input = $(this).parents('.input-group').find(':text'),
-        log = numFiles > 1 ? numFiles + ' files selected' : label;
+      var input = $(this).parents('.input-group').find(':text'),
+          log = numFiles > 1 ? numFiles + ' files selected' : label;
 
-    input_dir = $('#input-dir-input').val();
-    out_dir = $('#output-dir-input').val();
-    sample_image = log;
-    d3.select('.sample-tray').style('opacity', 1);
+      input_dir = $('#input-dir-input').val();
+      out_dir = $('#output-dir-input').val();
+      sample_image = log;
+      d3.select('.sample-tray').style('opacity', 1);
 
-    post_data = {'path':input_dir, 'filename':log};
-    d3.json('/set_sample/').post(
-      JSON.stringify(post_data), function(error, d) {
-      d = new Date();
-      $('.sample-img').attr('src', '/static/sample/'+sample_image+'?'+d.getTime());
-    });
+      post_data = {'path':input_dir, 'filename':log};
+      d3.json('/set_sample/').post(
+        JSON.stringify(post_data), function(error, d) {
+        d = new Date();
+        $('.sample-img').attr('src', '/static/sample/'+sample_image+'?'+d.getTime());
+      });
 
-    if( input.length ) {
-      input.val(log);
-    } else {
-      if( log ) alert(log);
-    }
+      if( input.length ) {
+        input.val(log);
+      } else {
+        if( log ) alert(log);
+      }
   });
 
   drag_it_up();
@@ -58,44 +58,61 @@ $(document).ready( function() {
     .style('stroke-width', '25')
     .style('stroke', '#e0e0e0');
 
-
   $('#run-button').on('click', run_samples )
-});
 
-function drag_it_up() {
-  dragula([document.getElementById('collapse1'), document.getElementById('pipeline-inner-tray')], {
-    copy: function (el, source) {
-    return source === document.getElementById('collapse1')
-  },
-  accepts: function (el, target) {
-    return target !== document.getElementById('collapse1')
-  },
-    removeOnSpill: true
-  }).on('drop', on_drop);
+  d3.select("body").on('contextmenu',function (d,i) {
+      if(contextMenuShowing) {
+          d3.event.preventDefault();
+          d3.select(".popup").remove();
+          contextMenuShowing = false;
+      } else {
+          d3_target = d3.select(d3.event.target);
+          if (d3_target.classed("moved")) {
+              d3.event.preventDefault();
+              contextMenuShowing = true;
+              d = params[d3_target.attr('id')];
+              console.log(d)
+              // Build the popup
 
-  dragula([document.getElementById('collapse2'), document.getElementById('pipeline-inner-tray')], {
-    copy: function (el, source) {
-    return source === document.getElementById('collapse2')
-  },
-  accepts: function (el, target) {
-    return target !== document.getElementById('collapse2')
-  },
-    removeOnSpill: true
-  }).on('drop', on_drop);
+              canvas = d3.select(".dashboard-container");
+              mousePosition = d3.mouse(canvas.node());
 
-  dragula([document.getElementById('collapse3'), document.getElementById('pipeline-inner-tray')], {
-    copy: function (el, source) {
-    return source === document.getElementById('collapse3')
-  },
-  accepts: function (el, target) {
-    return target !== document.getElementById('collapse3')
-  },
-    removeOnSpill: true
-  }).on('drop', on_drop);
+              popup = canvas.append("div")
+                  .attr("class", "popup")
+                  .style("left", mousePosition[0] + "px")
+                  .style("top", mousePosition[1] + "px");
+              popup.append("h2").text('BARF');
+              popup.append("p").text(
+                  "The " +  " division (wearing " + " uniforms) had " + " casualties during the show's original run.")
+
+              canvasSize = [
+                  canvas.node().offsetWidth,
+                  canvas.node().offsetHeight
+              ];
+
+              popupSize = [
+                  popup.node().offsetWidth,
+                  popup.node().offsetHeight
+              ];
+
+              if (popupSize[0] + mousePosition[0] > canvasSize[0]) {
+                  popup.style("left","auto");
+                  popup.style("right",0);
+              }
+
+              if (popupSize[1] + mousePosition[1] > canvasSize[1]) {
+                  popup.style("top","auto");
+                  popup.style("bottom",0);
+              }
+          }
+      }
+  });
 }
 
 function add_kernel_options() {
   filters.forEach(function(filt) {
+    console.log(d3)
+    console.log(d3.select('#collapse1'), $('#collapse1'))
     d3.select('#collapse1')
       .append('div').attr('class', 'kernel-subtray kernel-filter')
       .append('h1').attr('class', 'kernel-label').text(filt)
@@ -145,56 +162,6 @@ function run_batch(d){
   });
 }
 
-contextMenuShowing = false;
-
-d3.select("body").on('contextmenu',function (d,i) {
-    if(contextMenuShowing) {
-        d3.event.preventDefault();
-        d3.select(".popup").remove();
-        contextMenuShowing = false;
-    } else {
-        d3_target = d3.select(d3.event.target);
-        if (d3_target.classed("moved")) {
-            d3.event.preventDefault();
-            contextMenuShowing = true;
-            d = params[d3_target.attr('id')];
-            console.log(d)
-            // Build the popup
-
-            canvas = d3.select(".dashboard-container");
-            mousePosition = d3.mouse(canvas.node());
-
-            popup = canvas.append("div")
-                .attr("class", "popup")
-                .style("left", mousePosition[0] + "px")
-                .style("top", mousePosition[1] + "px");
-            popup.append("h2").text('BARF');
-            popup.append("p").text(
-                "The " +  " division (wearing " + " uniforms) had " + " casualties during the show's original run.")
-
-            canvasSize = [
-                canvas.node().offsetWidth,
-                canvas.node().offsetHeight
-            ];
-
-            popupSize = [
-                popup.node().offsetWidth,
-                popup.node().offsetHeight
-            ];
-
-            if (popupSize[0] + mousePosition[0] > canvasSize[0]) {
-                popup.style("left","auto");
-                popup.style("right",0);
-            }
-
-            if (popupSize[1] + mousePosition[1] > canvasSize[1]) {
-                popup.style("top","auto");
-                popup.style("bottom",0);
-            }
-        }
-    }
-});
-
 function run_samples(){
   input_dir = $('#input-dir-input').val();
   if (input_dir.length === 0) {
@@ -228,3 +195,77 @@ function run_samples(){
     $('.sample-img').attr('src', '/static/sample/'+sample_image+'?'+d.getTime());
   });
 }
+
+function drag_it_up() {
+  dragula([document.getElementById('collapse1'), document.getElementById('pipeline-inner-tray')], {
+    copy: function (el, source) {
+    return source === document.getElementById('collapse1')
+  },
+  accepts: function (el, target) {
+    return target !== document.getElementById('collapse1')
+  },
+    removeOnSpill: true
+  }).on('drop', on_drop);
+
+  dragula([document.getElementById('collapse2'), document.getElementById('pipeline-inner-tray')], {
+    copy: function (el, source) {
+    return source === document.getElementById('collapse2')
+  },
+  accepts: function (el, target) {
+    return target !== document.getElementById('collapse2')
+  },
+    removeOnSpill: true
+  }).on('drop', on_drop);
+
+  dragula([document.getElementById('collapse3'), document.getElementById('pipeline-inner-tray')], {
+    copy: function (el, source) {
+    return source === document.getElementById('collapse3')
+  },
+  accepts: function (el, target) {
+    return target !== document.getElementById('collapse3')
+  },
+    removeOnSpill: true
+  }).on('drop', on_drop);
+}
+
+
+function on_drop(el){
+  el.className += ' moved';
+  el.id = 'moved-'+c_params;
+  name = $(el).find('h1.kernel-label').text().toLowerCase();
+  switch (name) {
+    case 'gabor':
+      params['moved-'+c_params] = {'frequency':1.0,
+                                   'mode':'nearest',
+                                   'theta':0.0,
+                                   'bandwidth':1.0};
+    break;
+    case 'gaussian':
+      params['moved-'+c_params] = {'sigma':1.0, 'mode':'nearest'}
+      break;
+    case 'median':
+    case 'scharr':
+    case 'roberts':
+      params['moved-'+c_params] = {}
+      break;
+    // Morphology
+    case 'closing':
+    case 'dilation':
+    case 'erosion':
+    case 'opening':
+      params['moved-'+c_params] = {}
+      break;
+    // Transforms
+    case 'rgb2gray':
+      params['moved-'+c_params] = {}
+      break;
+  }
+  if (sample_image != '') {
+    run_samples()
+  }
+  c_params += 1
+}
+
+module.exports = {
+  draw_gui: run_gui
+};
