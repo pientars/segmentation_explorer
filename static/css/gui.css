@@ -105,8 +105,8 @@ html,body,.container {
   height: 100%;
 }
 
-#run-button {
-  position: absolute;
+#run-button, #run-batch-button, #code-button  {
+  margin-right: 5px;
 }
 
 .popup {
