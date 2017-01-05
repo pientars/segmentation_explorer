@@ -5,7 +5,6 @@ import argparse
 
 def run_sample(data):
   go_okay = False
-  print 'DATA:' + str(data)
   try:
     model.run_sample(data['path'], data['filename'], data['pipeline'])
     go_okay = True
@@ -29,7 +28,6 @@ def read_in():
   return json.loads(lines[0])
 
 def main():
-  print 'feck off'
   data = read_in()
   func_code = data['func_code']
   if func_code == 'sample':

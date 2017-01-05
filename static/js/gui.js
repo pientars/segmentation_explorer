@@ -156,10 +156,7 @@ function run_samples(){
                    'pipeline':trilden,
                    'path':input_dir,
                    'func_code':'sample'};
-  sp.run_sample(pipeline_data);
-  d = new Date();
-  d3.select('.sample-tray').transition().duration(500).style('opacity', 1);
-  d3.select('.sample-img').attr('src','./static/sample/'+fn);
+  sp.run_sample(pipeline_data, update_sample_image);
 }
 
 function drag_it_up() {
@@ -194,6 +191,13 @@ function drag_it_up() {
   }).on('drop', on_drop);
 }
 
+function update_sample_image(){
+  console.log('uypdating shizz')
+  d = new Date();
+  var fn = sample_image.split('\\').pop().split('/').pop();
+  d3.select('.sample-tray').transition().duration(500).style('opacity', 1);
+  d3.select('.sample-img').attr('src','./static/sample/'+fn+'#');
+}
 
 function on_drop(el){
   el.className += ' moved';
