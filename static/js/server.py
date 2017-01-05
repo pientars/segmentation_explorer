@@ -24,13 +24,19 @@ def batch(data):
     go_okay = False
   return go_okay
 
+def read_in():
+  lines = sys.stdin.readlines()
+  return json.loads(lines[0])
+
+def main():
+  print 'feck off'
+  data = read_in()
+  func_code = data['func_code']
+  if func_code == 'sample':
+    exit(run_sample(data))
+  elif func_code == 'batch':
+    exit(batch(data))
+
+
 if __name__ == '__main__':
-  with open('../sample/mentat_pipeline.json') as data_file:
-    data = json.load(data_file)
-    print data
-    # data = json.loads(json.load(data_file))
-    func_code = data['func_code']
-    if func_code == 'sample':
-      exit(run_sample(data))
-    elif func_code == 'batch':
-      exit(batch(data))
+  main()
