@@ -9,6 +9,8 @@ const BrowserWindow = electron.BrowserWindow;
 const path = require('path');
 const url = require('url');
 const fs = require('fs');
+// const process = require('process');
+
 // const dialog = electron.dialog;
 // require('./static/gui.js')
 
