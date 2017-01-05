@@ -1,15 +1,8 @@
 var spawn = require('child_process').spawn;
 var path = require('path');
-var jsonfile = require('jsonfile');
 
 function run_sample(pipeline_data, cb){
-  file = './static/sample/mentat_pipeline.json'
-  jsonfile.writeFile(file, pipeline_data, function (err) {
-    if (err != undefined || err != null) console.log(err);
-  })
-
   let pyth = spawn('python', ['static/js/server.py']);
-  // let pyth = spawn('pwd', []);
   pyth.stdin.write(JSON.stringify(pipeline_data));
   pyth.stdin.end();
   // pyth.stdout.pipe(process.stdout);
@@ -21,11 +14,6 @@ function run_sample(pipeline_data, cb){
 }
 
 function run_batch(pipeline_data, cb){
-  file = './static/sample/mentat_pipeline.json'
-  jsonfile.writeFile(file, pipeline_data, function (err) {
-    if (err != undefined || err != null) console.log(err);
-  })
-
   let pyth = spawn('python', ['static/js/server.py']);
   pyth.stdout.pipe(process.stdout);
   pyth.stderr.pipe(process.stdout);
@@ -38,7 +26,20 @@ function run_batch(pipeline_data, cb){
 }
 
 function get_pipeline_code(pipeline_data, cb){
-  cb();
+  var code_result = ''
+  let pyth = spawn('python', ['static/js/server.py']);
+  // pyth.stdout.pipe(process.stdout);
+  // pyth.stderr.pipe(process.stdout);
+  pyth.stdin.write(JSON.stringify(pipeline_data));
+  pyth.stdin.end();
+  pyth.stdout.on('data', function(data){
+    console.log(data.toString());
+    code_result = data.toString();
+  });
+  pyth.on('exit', (error_code) => {
+    console.log("Exit", error_code);
+    cb(code_result);
+  });
 }
 
 

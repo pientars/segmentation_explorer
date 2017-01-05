@@ -100,20 +100,6 @@ function add_kernel_options() {
 }
 
 
-function get_pipeline_data(){
-  files = [input_dir+sample_image]
-  var trilden = [];
-  $('#pipeline-inner-tray > div > h1.kernel-label').contents().each(function(d){
-    trilden.push({
-      'name': $(this).text().toLowerCase(),
-      'params':params['moved-'+d]
-    });
-  });
-  pipeline_data = {'filenames':files,
-               'pipeline':trilden,
-               'out_dir':out_dir};
-  return pipeline_data;
-}
 
 function run_batch(){
   input_dir = $('#batch-dir-input').val();
@@ -177,7 +163,23 @@ function run_samples(){
 }
 
 function run_code() {
+  trilden = []
+  $('#pipeline-inner-tray > div').each(function(i, d){
+    var id = $(d).attr('id'),
+        label = $(d).children('h1.kernel-label').text();
+        trilden.push({
+          'name': label.toLowerCase(),
+          'params':params[id]
+        });
+  });
+  var pipeline_data = {'pipeline':trilden, 'func_code':'code'}
+  console.log(pipeline_data)
+  sp.get_pipeline_code(pipeline_data, draw_code_popup)
+}
 
+function draw_code_popup(code){
+  d3.select('.code-pre').text(code)
+  $('#myModal').modal('show')
 }
 
 function drag_it_up() {

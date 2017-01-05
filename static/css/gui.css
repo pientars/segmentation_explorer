@@ -132,3 +132,7 @@ html,body,.container {
   overflow: overflow;
   opacity: 0;
 }
+
+.code-popup {
+  position:absolute;
+}

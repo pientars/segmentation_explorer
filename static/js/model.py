@@ -12,8 +12,6 @@ def run_sample(path, filename, pipeline):
   new_image = apply_pipeline(image, pipeline)
   io.imsave(os.path.join(os.getcwd(),'static/sample/', filename), new_image)
 
-
-
 def run_set_on_batch(input_dir, out_dir, pipeline):
   # is out_dir there?
   if not os.path.exists(out_dir):
@@ -77,22 +75,27 @@ def copy_sample_to_server(path, fn):
 
 def generate_pipeline_python_code(pipeline, pretty=False):
   pipeline_str = '\ndef mentat_pipeline(im):'
-  includes = '# Place this import at the top of your python project\n# Requires python modules skimage and numpy\n from skimage import '
+  includes = '# Place this import at the top of your python project\n# Requires python modules skimage and numpy\nfrom skimage import '
   modules_used = set()
+  first_call = True
   for pip in pipeline:
     name = pip['name']
     pms = pip['params']
+    var_name = 'nu_im'
+    if first_call:
+      first_call = False
+      var_name = 'im'
     if name in filters_namespace:
       modules_used.add('filters')
-      pipeline_str += '\n    nu_im = filters.'+name+'(im)'
+      pipeline_str += '\n    nu_im = filters.'+name+'('+var_name+')'
     elif name in morphology_namespace:
       modules_used.add('morphology')
-      pipeline_str += '\n    nu_im = morphology.'+name+'(im)'
+      pipeline_str += '\n    nu_im = morphology.'+name+'('+var_name+')'
     elif name in color_namespace:
       modules_used.add('color')
-      pipeline_str += '\n   nu_im = color.'+name+'(im)'
-    includes += ','.join(list(modules_used))
-    return includes + pipeline_str + '    return nu_im'
+      pipeline_str += '\n    nu_im = color.'+name+'('+var_name+')'
+  includes += ','.join(list(modules_used))
+  return includes +'\n'+ pipeline_str + '\n    return nu_im'
 
 
 if __name__ == '__main__':
