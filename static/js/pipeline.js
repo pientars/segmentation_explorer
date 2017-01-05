@@ -1,3 +1,8 @@
+var d3 = require('d3')
+var $ = require('jquery')
+
+
+
 function on_drop(el){
   el.className += ' moved';
   el.id = 'moved-'+c_params;
@@ -34,3 +39,8 @@ function on_drop(el){
   }
   c_params += 1
 }
+
+
+module.exports = {
+  on_drop: on_drop
+};
