@@ -192,11 +192,10 @@ function drag_it_up() {
 }
 
 function update_sample_image(){
-  console.log('uypdating shizz')
   d = new Date();
   var fn = sample_image.split('\\').pop().split('/').pop();
   d3.select('.sample-tray').transition().duration(500).style('opacity', 1);
-  d3.select('.sample-img').attr('src','./static/sample/'+fn+'#');
+  d3.select('.sample-img').attr('src','./static/sample/'+fn+'?'+d.getTime());
 }
 
 function on_drop(el){
