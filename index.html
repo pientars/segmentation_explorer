@@ -24,14 +24,7 @@
 <body>
   <nav class="navbar navbar-default navbar-fixed-top" id="main-nav">
     <div class="container-fluid">
-      <!-- Brand and toggle get grouped for better mobile display -->
-      <div class="col-sm-1">
-        <div class="navbar-header">
-        <!-- <a class="title-light navbar-brand">seg</a> -->
-        <a class="navbar-brand" id="title-text" href="#">Mentat</a>
-        <!-- <a class="title-light navbar-brand">ion</a> -->
-        </div>
-      </div>
+
       <div class="col-sm-3">
         <div class="input-group file-input">
           <label class="input-group-btn">
@@ -62,7 +55,7 @@
           <input type="text" class="form-control" id="output-dir-input" placeholder="Select output folder...">
         </div>
       </div>
-      <div class="col-sm-2" id="run-button-menu">
+      <div class="col-sm-3" id="run-button-menu">
           <span class="btn btn-warning" id="run-button">
             Sample<span class="glyphicon glyphicon-play" aria-hidden="true" id="batch-glyph"></span>
           </span>
@@ -98,12 +91,13 @@
 <div class="container-fluid dashboard-container">
   <div class="row full-row">
     <div class="col-sm-2" id="kernel-tray">
+    <h1 class="" id="title-text" href="#">Mentat</a>
       <div class="outer-kernel-tray">
         <div class="panel-group" id="accordion">
           <div class="panel panel-default">
             <div class="panel-heading">
               <h4 class="panel-title">
-                <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">Filters</a>
+                <a class="accordion-title" data-toggle="collapse" data-parent="#accordion" href="#collapse1">Filters</a>
               </h4>
             </div>
             <div id="collapse1" class="panel-collapse collapse">
@@ -113,7 +107,7 @@
           <div class="panel panel-default">
             <div class="panel-heading">
               <h4 class="panel-title">
-                <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">Morphology</a>
+                <a class="accordion-title" data-toggle="collapse" data-parent="#accordion" href="#collapse2">Morphology</a>
               </h4>
             </div>
             <div id="collapse2" class="panel-collapse collapse">
@@ -123,7 +117,7 @@
           <div class="panel panel-default">
             <div class="panel-heading">
               <h4 class="panel-title">
-                <a data-toggle="collapse" data-parent="#accordion" href="#collapse3">Transform</a>
+                <a class="accordion-title" data-toggle="collapse" data-parent="#accordion" href="#collapse3">Transform</a>
               </h4>
             </div>
             <div id="collapse3" class="panel-collapse collapse">
