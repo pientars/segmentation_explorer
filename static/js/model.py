@@ -35,6 +35,7 @@ def apply_pipeline(im, pipeline):
                              bandwidth=pms['bandwidth'],
                              mode=pms['mode'])
     elif (name == 'gaussian'):
+      print pms
       im = filters.gaussian(im, sigma=pms['sigma'], mode=pms['mode'])
     elif (name == 'median'):
       im = filters.median(im)
