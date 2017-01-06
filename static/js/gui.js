@@ -155,7 +155,8 @@ function drag_it_up() {
     return target !== document.getElementById('collapse1')
   },
     removeOnSpill: true
-  }).on('drop', on_drop);
+  }).on('drop', on_drop)
+    .on('drag', on_drag);
 
   dragula([document.getElementById('collapse2'), document.getElementById('pipeline-inner-tray')], {
     copy: function (el, source) {
@@ -165,7 +166,8 @@ function drag_it_up() {
     return target !== document.getElementById('collapse2')
   },
     removeOnSpill: true
-  }).on('drop', on_drop);
+  }).on('drop', on_drop)
+    .on('drag', on_drag);
 
   dragula([document.getElementById('collapse3'), document.getElementById('pipeline-inner-tray')], {
     copy: function (el, source) {
@@ -175,7 +177,9 @@ function drag_it_up() {
     return target !== document.getElementById('collapse3')
   },
     removeOnSpill: true
-  }).on('drop', on_drop);
+  }).on('drop', on_drop)
+    .on('drag', on_drag);
+
 }
 
 function parameter_context(d, i) {
@@ -361,6 +365,15 @@ function on_drop(el){
     run_samples()
   }
   c_params += 1
+}
+
+function on_drag(el){
+  if(contextMenuShowing) {
+      if (d3.select(el).classed('moved')){
+        d3.select(".popup").remove();
+        contextMenuShowing = false;
+      }
+  }
 }
 
 module.exports = {
