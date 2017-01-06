@@ -1,5 +1,6 @@
 var sp = require('./subprocess.js');
 var path = require('path')
+require('./metaparameters.js')
 
 var params = {},
     c_params = 0,
@@ -237,41 +238,35 @@ function parameter_context(d, i) {
   }
 }
 
-meta_params = {'gaussian':[{'name':'sigma', 'disp_name':'Sigma', 'type':'numeric', 'default':1.0},
-                           {'name':'mode', 'disp_name':'Boundary', 'type':'disc', 'opts':['reflect', 'nearest', 'mirror', 'wrap'], 'default':'nearest'}]}
-
 function add_parameters_to_popup(popup, name, p_ind){
+  // TODO REDO THIS, THIS IS SLOPPY GARBAGE
   var l_name = name.toLowerCase();
+  var p_type = '';
   switch (l_name) {
     case 'gabor':
-      popup.append('a').attr('href', 'http://scikit-image.org/docs/dev/api/skimage.filters.html#gabor')
-      break;
     case 'gaussian':
-      popup.append('a').attr('href', 'http://scikit-image.org/docs/dev/api/skimage.filters.html#gaussian')
-        .text('Scikit-image: '+ name)
-        .attr('target', '_blank')
-        .attr('class', 'param-link');
-      add_forms_for_params(p_ind, l_name);
-      break;
     case 'median':
-    break;
     case 'scharr':
-    break;
     case 'roberts':
+      p_type = 'filter';
       break;
     // Morphology
     case 'closing':
-    break;
     case 'dilation':
-    break;
     case 'erosion':
-    break;
     case 'opening':
+      p_type = 'morphology';
       break;
-    // Transforms
+    // Color
     case 'rgb2gray':
-      break;
+      p_type = 'color';
   }
+  popup.append('a').attr('href', 'http://scikit-image.org/docs/dev/api/skimage.'+p_type+'.html#'+l_name)
+    .text('Scikit-image: '+ name)
+    .attr('target', '_blank')
+    .attr('class', 'param-link');
+  add_forms_for_params(p_ind, l_name);
+
 }
 
 function is_param_default(param, p_ind){
@@ -327,6 +322,11 @@ function add_forms_for_params(p_ind, l_name){
       console.log('Illegal param type')
     }
   })
+
+  if (meta_params[l_name].length === 0) {
+    popup.append('div').text('This kernel is parameter free!');
+  }
+
 }
 
 function on_drop(el){
