@@ -7,10 +7,10 @@ filters_namespace = set(['gabor', 'gaussian', 'median', 'scharr', 'roberts'])
 morphology_namespace = set(['closing', 'dilation', 'opening', 'erosion'])
 color_namespace = set(['rgb2gray'])
 
-def run_sample(path, filename, pipeline):
-  image = io.imread(os.path.join(path,filename))
+def run_sample(sample_output, filename, pipeline):
+  image = io.imread(filename)
   new_image = apply_pipeline(image, pipeline)
-  io.imsave(os.path.join(os.getcwd(),'static/sample/', filename), new_image)
+  io.imsave(sample_output, new_image)
 
 def run_set_on_batch(input_dir, out_dir, pipeline):
   # is out_dir there?
@@ -35,8 +35,7 @@ def apply_pipeline(im, pipeline):
                              bandwidth=pms['bandwidth'],
                              mode=pms['mode'])
     elif (name == 'gaussian'):
-      print pms
-      im = filters.gaussian(im, sigma=pms['sigma'], mode=pms['mode'])
+      im = filters.gaussian(im, sigma=float(pms['sigma']), mode=pms['mode'])
     elif (name == 'median'):
       im = filters.median(im)
     elif (name == 'scharr'):

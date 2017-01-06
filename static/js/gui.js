@@ -89,7 +89,6 @@ function run_samples(){
   }
   out_dir = $('#output-dir-input').val();
   sample_image = $('#sample-file-file').val();
-  files = [input_dir+sample_image]
   var trilden = [];
 
   $('#pipeline-inner-tray > div').each(function(i, d){
@@ -102,11 +101,12 @@ function run_samples(){
         console.log(label)
   });
   var fn = sample_image.split('\\').pop().split('/').pop();
-  var sample_dir = path.join(process.cwd(), '/static/sample/', fn)
-  pipeline_data = {'filename':sample_dir,
+  var path_to_sample = path.join(process.cwd(), '/static/sample/', fn)
+  pipeline_data = {'filename':sample_image,
                    'pipeline':trilden,
-                   'path':input_dir,
-                   'func_code':'sample'};
+                  //  'path':input_dir,
+                   'func_code':'sample',
+                   'sample_output':path_to_sample};
   $("body").css("cursor", "progress");
   sp.run_sample(pipeline_data, update_sample_image);
 }

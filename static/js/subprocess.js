@@ -5,7 +5,7 @@ function run_sample(pipeline_data, cb){
   let pyth = spawn('python', ['static/js/server.py']);
   pyth.stdin.write(JSON.stringify(pipeline_data));
   pyth.stdin.end();
-  pyth.stdout.pipe(process.stdout);
+  // pyth.stdout.pipe(process.stdout);
   // pyth.stderr.pipe(process.stdout);
   pyth.on('exit', (error_code) => {
    console.log("Exit", error_code);

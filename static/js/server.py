@@ -6,7 +6,7 @@ import argparse
 def run_sample(data):
   go_okay = False
   try:
-    model.run_sample(data['path'], data['filename'], data['pipeline'])
+    model.run_sample(data['sample_output'], data['filename'], data['pipeline'])
     go_okay = True
   except:
     print 'Error in pipeline'
