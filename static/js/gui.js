@@ -270,6 +270,11 @@ function add_parameters_to_popup(popup, name, p_ind){
   }
 }
 
+function is_param_default(param, p_ind){
+  if (params[p_ind][param.name] != param.default) return params[p_ind][param.name];
+  return param.default;
+}
+
 function add_forms_for_params(p_ind, l_name){
   meta_params[l_name].forEach(function(param){
     if (param.type === 'numeric'){
@@ -280,7 +285,7 @@ function add_forms_for_params(p_ind, l_name){
       input_g.append('input')
         .attr('class', 'form-control')
         .attr('id', param.name)
-        .attr('placeholder', param.default);
+        .attr('placeholder', is_param_default(param, p_ind));
       $('#'+param.name).change(function(d) {
         params[p_ind][$(this).attr('id')] = $(this).val()
       })
@@ -309,7 +314,7 @@ function add_forms_for_params(p_ind, l_name){
       input_g.append('input')
         .attr('class', 'form-control')
         .attr('id', 'param-input-'+p_ind)
-        .attr('placeholder', param.default);
+        .attr('placeholder', is_param_default(param, p_ind));
       $('#droppy-'+p_ind+' li').on('click', function(){
         params[p_ind][$(this).attr('id')] = $(this).text()
         $('#param-input-'+p_ind).val($(this).text());
