@@ -247,40 +247,7 @@ function add_parameters_to_popup(popup, name, p_ind){
         .text('Scikit-image: '+ name)
         .attr('target', '_blank')
         .attr('class', 'param-link');
-      meta_params[l_name].forEach(function(param){
-        if (param.type === 'numeric'){
-          var input_g = popup.append('div').attr('class', 'input-group param-group');
-          input_g.append('span')
-            .attr('class', 'input-group-addon')
-            .text(param.disp_name);
-          input_g.append('input')
-            .attr('class', 'form-control')
-            .attr('placeholder', param.default);
-        } else if (param.type === 'disc') {
-          var input_g = popup.append('div').attr('class', 'input-group param-group');
-          var input_b = input_g.append('div').attr('class', 'input-group-btn');
-          input_b.append('button')
-            .attr('class', 'btn btn-secondary dropdown-toggle')
-            .attr('type', 'button')
-            .attr('data-toggle', 'dropdown')
-            .attr('aria-haspopup', 'true')
-            .attr('aria-expanded', 'false')
-            .text(param.disp_name);
-          var droppy = input_b.append('div').attr('class', 'dropdown-menu');
-          param.opts.forEach(function(opto){
-            droppy.append('a')
-              .attr('class', 'dropdown-item')
-              .attr('href', '#')
-              .text(opto)
-          });
-          input_g.append('input')
-            .attr('class', 'form-control')
-            .attr('placeholder', param.default);
-        } else {
-          console.log('Illegal param type')
-        }
-      })
-
+      add_forms_for_params(p_ind, l_name);
       break;
     case 'median':
     break;
@@ -301,6 +268,56 @@ function add_parameters_to_popup(popup, name, p_ind){
     case 'rgb2gray':
       break;
   }
+}
+
+function add_forms_for_params(p_ind, l_name){
+  meta_params[l_name].forEach(function(param){
+    if (param.type === 'numeric'){
+      var input_g = popup.append('div').attr('class', 'input-group param-group');
+      input_g.append('span')
+        .attr('class', 'input-group-addon')
+        .text(param.disp_name);
+      input_g.append('input')
+        .attr('class', 'form-control')
+        .attr('id', param.name)
+        .attr('placeholder', param.default);
+      $('#'+param.name).change(function(d) {
+        params[p_ind][$(this).attr('id')] = $(this).val()
+      })
+    } else if (param.type === 'disc') {
+      var input_g = popup.append('div').attr('class', 'input-group param-group');
+      var input_b = input_g.append('div').attr('class', 'input-group-btn');
+      input_b.append('button')
+        .attr('class', 'btn btn-secondary dropdown-toggle')
+        .attr('type', 'button')
+        .attr('data-toggle', 'dropdown')
+        .attr('aria-haspopup', 'true')
+        .attr('aria-expanded', 'false')
+        .text(param.disp_name);
+      var droppy = input_b.append('ul').attr('class', 'dropdown-menu')
+        .attr('id', 'droppy-'+p_ind)
+        .attr('role', 'menu');
+      param.opts.forEach(function(opto){
+        droppy.append('li')
+          .attr('role', 'presentation')
+          .attr('id', param.name)
+          .append('a')
+            .attr('class', 'dropdown-item')
+            .attr('href', '#')
+            .text(opto)
+      });
+      input_g.append('input')
+        .attr('class', 'form-control')
+        .attr('id', 'param-input-'+p_ind)
+        .attr('placeholder', param.default);
+      $('#droppy-'+p_ind+' li').on('click', function(){
+        params[p_ind][$(this).attr('id')] = $(this).text()
+        $('#param-input-'+p_ind).val($(this).text());
+      });
+    } else {
+      console.log('Illegal param type')
+    }
+  })
 }
 
 function on_drop(el){
