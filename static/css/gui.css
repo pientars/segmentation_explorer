@@ -114,11 +114,11 @@ html,body,.container {
     left: 0;
     top: 0;
     background-color: #fff;
-    width: 200px;
+    width: 300px;
     border: 1px #ccc solid;
     border-radius: 6px;
     box-shadow: #333 2px 2px 4px;
-    padding: 8px;
+    padding: 5px 8px 0px 8px;
     font-family: arial, helvetica, sans-serif;
 }
 
@@ -133,6 +133,19 @@ html,body,.container {
   opacity: 0;
 }
 
+/* POPUP STUFF */
 .code-popup {
   position:absolute;
+}
+
+.param-header {
+  margin: 2px 0px 2px 0px;
+}
+
+.param-link {
+  margin: 0px;
+}
+
+.param-group {
+  margin: 5px 0px 5px 0px;
 }

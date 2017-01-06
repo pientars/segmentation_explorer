@@ -190,53 +190,116 @@ function parameter_context(d, i) {
           d3.event.preventDefault();
           contextMenuShowing = true;
           d = params[d3_target.attr('id')];
-          // console.log(d)
+          console.log(d)
           // Build the popup
 
           var menu_pos = {},
               menu_width = 0;
           canvas = d3.select(".dashboard-container");
+          var name = ''
           if (d3_target.classed('kernel-label')){
             // get rents
             var kern_subtray = d3_target.node().parentNode;
             menu_pos = $(kern_subtray).offset();
             menu_width = $(kern_subtray).width() + 10;
+            name = d3_target.text();
             // console.log(menu_pos, menu_width)
           } else {
             menu_pos = $(d3_target.node()).offset();
             menu_width = $(d3_target.node()).width() + 10;
+            name = d3_target.select('h1').text();
           }
-
-          // TODO obvs need to have separate templates for each params
 
           popup = canvas.append("div")
               .attr("class", "popup")
               .style("left", (menu_pos.left+menu_width) + "px")
               .style("top", menu_pos.top + "px");
-          popup.append("h2").text('BARF');
-          popup.append("p").text(
-              "The " +  " division (wearing " + " uniforms) had " + " casualties during the show's original run.")
+          popup.append("h4").attr('class', 'param-header').text(name + ' Parameters');
+          add_parameters_to_popup(popup, name, d3_target.attr('id'))
 
-          canvasSize = [
-              canvas.node().offsetWidth,
-              canvas.node().offsetHeight
-          ];
-
-          popupSize = [
-              popup.node().offsetWidth,
-              popup.node().offsetHeight
-          ];
-
+          canvasSize = [ canvas.node().offsetWidth,
+                         canvas.node().offsetHeight];
+          popupSize = [ popup.node().offsetWidth,
+                        popup.node().offsetHeight];
           if (popupSize[0] + (menu_pos.left+menu_width) > canvasSize[0]) {
               popup.style("left","auto");
               popup.style("right",0);
           }
-
           if (popupSize[1] + menu_pos.top > canvasSize[1]) {
               popup.style("top","auto");
               popup.style("bottom",0);
           }
       }
+  }
+}
+
+meta_params = {'gaussian':[{'name':'sigma', 'disp_name':'Sigma', 'type':'numeric', 'default':1.0},
+                           {'name':'mode', 'disp_name':'Boundary', 'type':'disc', 'opts':['reflect', 'nearest', 'mirror', 'wrap'], 'default':'nearest'}]}
+
+function add_parameters_to_popup(popup, name, p_ind){
+  var l_name = name.toLowerCase();
+  switch (l_name) {
+    case 'gabor':
+      popup.append('a').attr('href', 'http://scikit-image.org/docs/dev/api/skimage.filters.html#gabor')
+      break;
+    case 'gaussian':
+      popup.append('a').attr('href', 'http://scikit-image.org/docs/dev/api/skimage.filters.html#gaussian')
+        .text('Scikit-image: '+ name)
+        .attr('target', '_blank')
+        .attr('class', 'param-link');
+      meta_params[l_name].forEach(function(param){
+        if (param.type === 'numeric'){
+          var input_g = popup.append('div').attr('class', 'input-group param-group');
+          input_g.append('span')
+            .attr('class', 'input-group-addon')
+            .text(param.disp_name);
+          input_g.append('input')
+            .attr('class', 'form-control')
+            .attr('placeholder', param.default);
+        } else if (param.type === 'disc') {
+          var input_g = popup.append('div').attr('class', 'input-group param-group');
+          var input_b = input_g.append('div').attr('class', 'input-group-btn');
+          input_b.append('button')
+            .attr('class', 'btn btn-secondary dropdown-toggle')
+            .attr('type', 'button')
+            .attr('data-toggle', 'dropdown')
+            .attr('aria-haspopup', 'true')
+            .attr('aria-expanded', 'false')
+            .text(param.disp_name);
+          var droppy = input_b.append('div').attr('class', 'dropdown-menu');
+          param.opts.forEach(function(opto){
+            droppy.append('a')
+              .attr('class', 'dropdown-item')
+              .attr('href', '#')
+              .text(opto)
+          });
+          input_g.append('input')
+            .attr('class', 'form-control')
+            .attr('placeholder', param.default);
+        } else {
+          console.log('Illegal param type')
+        }
+      })
+
+      break;
+    case 'median':
+    break;
+    case 'scharr':
+    break;
+    case 'roberts':
+      break;
+    // Morphology
+    case 'closing':
+    break;
+    case 'dilation':
+    break;
+    case 'erosion':
+    break;
+    case 'opening':
+      break;
+    // Transforms
+    case 'rgb2gray':
+      break;
   }
 }
 

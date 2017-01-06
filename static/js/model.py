@@ -74,7 +74,7 @@ def copy_sample_to_server(path, fn):
 
 
 def generate_pipeline_python_code(pipeline, pretty=False):
-  pipeline_str = '\ndef mentat_pipeline(im):'
+  pipeline_str = '\n# Invoke this function to reproduce your MENTAT results on a single image\n# Input: im - an RGB/RGBA/Grayscale numpy array\ndef mentat_pipeline(im):'
   includes = '# Place this import at the top of your python project\n# Requires python modules skimage and numpy\nfrom skimage import '
   modules_used = set()
   first_call = True
