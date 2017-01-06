@@ -13,6 +13,7 @@ body {
 
 #title-text {
   font-size: 55px;
+  font-size: 3.5vw;
   font-family: 'Bowlby One SC', cursive;
   padding: 0px 1px 0px 1px;
   text-align: center;
