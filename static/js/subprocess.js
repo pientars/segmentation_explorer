@@ -28,8 +28,8 @@ function run_batch(pipeline_data, cb){
 function get_pipeline_code(pipeline_data, cb){
   var code_result = ''
   let pyth = spawn('python', ['static/js/server.py']);
-  // pyth.stdout.pipe(process.stdout);
-  // pyth.stderr.pipe(process.stdout);
+  pyth.stdout.pipe(process.stdout);
+  pyth.stderr.pipe(process.stdout);
   pyth.stdin.write(JSON.stringify(pipeline_data));
   pyth.stdin.end();
   pyth.stdout.on('data', function(data){

@@ -87,20 +87,31 @@ def generate_pipeline_python_code(pipeline, pretty=False):
       var_name = 'im'
     if name in filters_namespace:
       modules_used.add('filters')
-      pipeline_str += '\n    nu_im = filters.'+name+'('+var_name+')'
+      pipeline_str += '\n    nu_im = filters.'+name+'('+var_name+get_opts(pms)+')'
     elif name in morphology_namespace:
       modules_used.add('morphology')
-      pipeline_str += '\n    nu_im = morphology.'+name+'('+var_name+')'
+      pipeline_str += '\n    nu_im = morphology.'+name+'('+var_name+get_opts(pms)+')'
     elif name in color_namespace:
       modules_used.add('color')
-      pipeline_str += '\n    nu_im = color.'+name+'('+var_name+')'
+      pipeline_str += '\n    nu_im = color.'+name+'('+var_name+get_opts(pms)+')'
   includes += ','.join(list(modules_used))
   return includes +'\n'+ pipeline_str + '\n    return nu_im'
+
+def get_opts(pms):
+  if len(pms) == 0: return ''
+  p_str = ''
+  for param_key in pms.keys():
+    if type(pms[param_key]) == str:
+      p_str += ', ' + param_key + '=\'' + str(pms[param_key])+'\''
+    else:
+      p_str += ', ' + param_key + '=' + str(pms[param_key])
+  return p_str[:]
 
 
 if __name__ == '__main__':
   fn = ['/Users/Astraeus/Documents/mentat_data/arth.jpg']
   # pipez = [{'name':'gaussian', 'params':{'sigma':1, 'mode':'nearest'}}]
-  pipez = [{'name':'dilation', 'params':{}}]
+  pipez = [{'name':'gaussian', 'params':{'sigma':3.0, 'mode':'mirror'}}]
   out_dir = '/Users/Astraeus/Documents/mentat_data/output/'
-  run_sample('/Users/Astraeus/Documents/mentat_data/', 'arth.jpg', pipez)
+  # run_sample('/Users/Astraeus/Documents/mentat_data/', 'arth.jpg', pipez)
+  print(generate_pipeline_python_code(pipez))
