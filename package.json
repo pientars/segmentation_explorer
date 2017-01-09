@@ -1,6 +1,6 @@
 {
   "name": "MENTAT",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "MENTAT: Visual Segmentation Explorer",
   "main": "main.js",
   "scripts": {
