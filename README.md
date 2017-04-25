@@ -41,8 +41,15 @@ sudo apt-get install python-skimage
 
 For now you will need electron to run the app.
 Follow this guide to [Install Electron](https://electron.atom.io/)
-
-
+```bash
+# Go into freshly cloned dir
+cd <cloned-mentat-directory>
+# Install the npm dependencies
+npm install
+# Run the app!
+npm start
+```
+The app will open in a window of its own.
 
 
 
